@@ -13,3 +13,12 @@ My project will have these features
 in common, but I will implement trading, longest road/army, and 
 
 Structural Plan:
+
+Algorithmic Plan:
+
+Timeline Plan:
+
+Version Control Plan:
+
+Module List:
+Not planning to use any additional modules.
