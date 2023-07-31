@@ -5,7 +5,7 @@ My term project is named Settlers of Ketan and it will be a reimplementation of
 the board game Settlers of Catan.
 
 Similar Projects:
-I've taken a look at many other Catan remakes, and they all have some sort of 
+I've taken a look at many other 15-112 TP Catan remakes, and they all have some sort of 
 basic hexagonal grid, settlements/cities, resources, and other stuff necessary
 for a simple implementation of Catan. 
 
@@ -13,12 +13,20 @@ My project will have these features
 in common, but I will implement trading, longest road/army, and 
 
 Structural Plan:
+I will organize my code into different folders, like a classes folder, an images
+folder, and a utils folder. 
 
 Algorithmic Plan:
+I will approach the trickiest part of the project, which will most likely be 
+calculating the longest road, by reading over the pathfinding guide and 
+consulting my TP mentor whenever necessary.
 
 Timeline Plan:
+I will follow the TP timeline.
 
 Version Control Plan:
+I have backed up my code on GitHub: 
+https://github.com/NathanYJiang/CMU_Pre-college.
 
 Module List:
-Not planning to use any additional modules.
+I am not planning to use any additional modules.
