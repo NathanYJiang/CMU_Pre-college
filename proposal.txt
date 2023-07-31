@@ -1,0 +1,15 @@
+Project Proposal
+
+Project Description:
+My term project is named Settlers of Ketan and it will be a reimplementation of
+the board game Settlers of Catan.
+
+Similar Projects:
+I've taken a look at many other Catan remakes, and they all have some sort of 
+basic hexagonal grid, settlements/cities, resources, and other stuff necessary
+for a simple implementation of Catan. 
+
+My project will have these features 
+in common, but I will implement trading, longest road/army, and 
+
+Structural Plan:

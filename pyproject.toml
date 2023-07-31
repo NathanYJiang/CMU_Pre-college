@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "Settlers_of_Ketan"
+version = "0.0.1"
+authors = [{name = "Nathan Jiang"}]
+description = "Settlers of Catan reimplementation"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "cmu_graphics==1.1.25"
+]
