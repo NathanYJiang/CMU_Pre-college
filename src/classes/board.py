@@ -1,19 +1,10 @@
 from utils.hexCoords import *
 
 class Board:
-    def draw(self, app):
-        self.drawGrid(app)
-        self.drawCells(app)
+    def __init__(self):
+        self.coords = set()
 
-    def drawCells(self, app):
-        for i in range(4, 9, 2):
-            pass
-
-    def drawGrid(self, app):
-        # draw the surrounding water
-        drawRect(0, 0, app.width, app.height, fill='lightBlue')
-
-        # draw the grid
+        # calculate all coords
         for py in range(-3, 3):
             for px in range(1, 12):
                 # ignore top left
@@ -32,21 +23,36 @@ class Board:
                 if py <= -3 and px == 10: continue
                 if py <= -2 and px == 11: continue
 
-
-                # draw land connecting the hexagons
-                # horizontal lines
-                if px + py < 11 and px - py < 12:
-                    self.drawLand(app, px, py, px+1, py)
-
-                # vertical lines
-                if px % 2 == 1 and py % 2 == 1 and py < 2:
-                    self.drawLand(app, px, py, px, py+1)
+                self.coords.add((px, py))
                 
-                if px % 2 == 0 and py % 2 == 0 and py < 2:
-                    self.drawLand(app, px, py, px, py+1)
+    def draw(self, app):
+        self.drawGrid(app)
+        self.drawCells(app)
 
-                # draw points
-                self.drawDot(app, px, py)
+    def drawCells(self, app):
+        for i in range(4, 9, 2):
+            pass
+
+    def drawGrid(self, app):
+        # draw the surrounding water
+        drawRect(0, 0, app.width, app.height, fill='lightBlue')
+
+        # draw the grid
+        for px, py in self.coords:
+            # draw land connecting the hexagons
+            # horizontal lines
+            if px + py < 11 and px - py < 12:
+                self.drawLand(app, px, py, px+1, py)
+
+            # vertical lines
+            if px % 2 == 1 and py % 2 == 1 and py < 2:
+                self.drawLand(app, px, py, px, py+1)
+            
+            if px % 2 == 0 and py % 2 == 0 and py < 2:
+                self.drawLand(app, px, py, px, py+1)
+
+            # draw points
+            self.drawDot(app, px, py)
     
     def drawLand(self, app, x1, y1, x2, y2):
         # dont allow coords with both x and y as .5
