@@ -24,7 +24,7 @@ class Board:
                 if py <= -2 and px == 11: continue
 
                 self.coords.add((px, py))
-                
+
     def draw(self, app):
         self.drawGrid(app)
         self.drawCells(app)
@@ -38,7 +38,7 @@ class Board:
         drawRect(0, 0, app.width, app.height, fill='lightBlue')
 
         # draw the grid
-        for px, py in self.coords:
+        for (px, py) in self.coords:
             # draw land connecting the hexagons
             # horizontal lines
             if px + py < 11 and px - py < 12:
@@ -50,7 +50,8 @@ class Board:
             
             if px % 2 == 0 and py % 2 == 0 and py < 2:
                 self.drawLand(app, px, py, px, py+1)
-
+        
+        for (px, py) in self.coords:
             # draw points
             self.drawDot(app, px, py)
     
