@@ -15,10 +15,8 @@ def restart(app):
 
 def redrawAll(app):
     app.board.draw(app)
-    app.board.drawSettlement(*getHexCoords(app, 8, 1), 'blue')
-    drawCircle(20, 20, 1, fill='red')
-    app.board.drawCity(*getHexCoords(app, 8, 2), 'red')
-    drawCircle(20, 50, 1, fill='red')
+    app.board.drawSettlement(*getHexCoords(app, 8, 1), 'red')
+    app.board.drawCity(*getHexCoords(app, 8, 2), 'blue')
 
 
 runApp(width=1200, height=700)
