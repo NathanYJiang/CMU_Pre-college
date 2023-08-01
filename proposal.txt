@@ -7,14 +7,15 @@ the board game Settlers of Catan.
 Similar Projects:
 I've taken a look at many other 15-112 TP Catan remakes, and they all have some sort of 
 basic hexagonal grid, settlements/cities, resources, and other stuff necessary
-for a simple implementation of Catan. 
-
-My project will have these features 
-in common, but I will implement trading, longest road/army, and 
+for a simple implementation of Catan. My project will have these features 
+in common, and additional features I will implement include trading and
+longest road/army. I hope to make the user experience smooth with little to no
+difficulties for new players.
 
 Structural Plan:
-I will organize my code into different folders, like a classes folder, an images
-folder, and a utils folder. 
+I will organize my code into different folders, like a classes folder, an 
+images folder, and a utils folder. I'll make sure that my code is organized, 
+with style and classes to make sure my code is understandable.
 
 Algorithmic Plan:
 I will approach the trickiest part of the project, which will most likely be 
@@ -22,7 +23,11 @@ calculating the longest road, by reading over the pathfinding guide and
 consulting my TP mentor whenever necessary.
 
 Timeline Plan:
-I will follow the TP timeline.
+I will first finish up the board setup and work on cards by TP1. Then I'll 
+create the game mechanics and buttons for turn based play by TP2, so it can
+be a playable game (MVP). Afterwards, I'll work on the user experience and 
+whatever other complex features like trading/longest road calculations I can 
+get done by TP3.
 
 Version Control Plan:
 I have backed up my code on GitHub: 

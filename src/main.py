@@ -17,6 +17,9 @@ def redrawAll(app):
     app.board.draw(app)
     app.board.drawSettlement(*getHexCoords(app, 8, 1), 'red')
     app.board.drawCity(*getHexCoords(app, 8, 2), 'blue')
+    print(len(app.board.centers))
+    for x, y in app.board.centers:
+        drawCircle(*getHexCoords(app, x, y), 5, fill='magenta')
 
 
 runApp(width=1200, height=700)

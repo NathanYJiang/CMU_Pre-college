@@ -3,6 +3,7 @@ from utils.hexCoords import *
 class Board:
     def __init__(self):
         self.coords = set()
+        self.centers = set()
 
         # calculate all coords
         for py in range(-3, 3):
@@ -24,6 +25,22 @@ class Board:
                 if py <= -2 and px == 11: continue
 
                 self.coords.add((px, py))
+
+                if (((px % 2 == 1 and py % 2 == 1) 
+                    or (px % 2 == 0 and py % 2 == 0)) 
+                    and px + py > 0 and px - py < 11 and py > -3):
+                    self.centers.add((px, py - 0.5))
+        
+        self.tiles = (['desert'] + ['wheat'] * 4 + ['sheep'] * 4 + ['wood'] * 4 
+                     + ['brick'] * 3 + ['ore'] * 3)
+        self.numbers = [2]
+        for i in range(3, 7):
+            self.numbers += [i] * 2
+        for i in range(8, 12):
+            self.numbers += [i] * 2
+        self.numbers += [12]
+        print(len(self.tiles), len(self.numbers))
+
 
     def draw(self, app):
         self.drawGrid(app)
