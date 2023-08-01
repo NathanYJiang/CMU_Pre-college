@@ -5,7 +5,8 @@ class Board:
         self.coords = set()
         self.centers = set()
         self.midpoints = set()
-        
+        self.buildings = dict()
+
         # calculate all coords
         for py in range(-3, 3):
             for px in range(1, 12):
@@ -27,6 +28,7 @@ class Board:
 
                 # coords for settlements/cities
                 self.coords.add((px, py))
+                self.buildings[(px, py)] = None
 
                 # center calculations for tiles/numbers
                 if (((px % 2 == 1 and py % 2 == 1) 
@@ -35,12 +37,14 @@ class Board:
                     self.centers.add((px, py - 0.5))
         
         # midpoint calculations for roads
-        for (px1, py1) in self.coords:
-            for (px2, py2) in self.coords:
-                if distance(px1, py1, px2, py2) == 1:
-                    self.midpoints.add(((px1 + px2)/2, (py1 + py2)/2))
-        
-        self.midpoints = self.midpoints - self.centers
+        # for (px1, py1) in self.coords:
+        #     for (px2, py2) in self.coords:
+        #         px = (px1 + px2)/2
+        #         py = (py1 + py2)/2
+        #         if (distance(px1, py1, px2, py2) == 1 
+        #             and (px, py) not in self.centers):
+        #             self.midpoints.add(((px1 + px2)/2, (py1 + py2)/2))
+        #             self.buildings[(px, py)] = None
         
         # board setup (tiles/numbers)
         # tiles (19 with desert)
@@ -54,7 +58,7 @@ class Board:
         for i in range(8, 12):
             self.numbers += [i] * 2
         self.numbers += [12]
-        
+
 
     def draw(self, app):
         self.drawGrid(app)
