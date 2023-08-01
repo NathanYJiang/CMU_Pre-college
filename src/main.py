@@ -20,6 +20,8 @@ def redrawAll(app):
     print(len(app.board.centers))
     for x, y in app.board.midpoints:
         drawCircle(*getHexCoords(app, x, y), 5, fill='magenta')
+    for x, y in app.board.ports:
+        drawCircle(*getHexCoords(app, x, y), 5, fill='magenta')
 
 
-runApp(width=1200, height=700)
+runApp(width=1400, height=850)

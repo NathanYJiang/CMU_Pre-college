@@ -1,11 +1,31 @@
 from utils.hexCoords import *
 
+class Port:
+    def __init__(t, w):
+        self.t = t
+        self.whatever = w
+
+def makeRandomPort():
+    return Port(a,b)
 class Board:
     def __init__(self):
         self.coords = set()
         self.centers = set()
         self.midpoints = set()
         self.buildings = dict()
+        
+        # port coordinates (fixed points)
+        self.ports = {
+            (3, 2.5): None, 
+            (7, 2.5): None, 
+            (10, 1.5): None, 
+            (12, -0.5): None, 
+            (10, -2.5): None, 
+            (7, -3.5): None, 
+            (3, -3.5): None, 
+            (1, -1.5): None, 
+            (1, 0.5): None
+        }
 
         # calculate all coords
         for py in range(-3, 3):
@@ -37,14 +57,14 @@ class Board:
                     self.centers.add((px, py - 0.5))
         
         # midpoint calculations for roads
-        # for (px1, py1) in self.coords:
-        #     for (px2, py2) in self.coords:
-        #         px = (px1 + px2)/2
-        #         py = (py1 + py2)/2
-        #         if (distance(px1, py1, px2, py2) == 1 
-        #             and (px, py) not in self.centers):
-        #             self.midpoints.add(((px1 + px2)/2, (py1 + py2)/2))
-        #             self.buildings[(px, py)] = None
+        for (px1, py1) in self.coords:
+            for (px2, py2) in self.coords:
+                px = (px1 + px2)/2
+                py = (py1 + py2)/2
+                if (distance(px1, py1, px2, py2) == 1 
+                    and (px, py) not in self.centers):
+                    self.midpoints.add(((px1 + px2)/2, (py1 + py2)/2))
+                    self.buildings[(px, py)] = None
         
         # board setup (tiles/numbers)
         # tiles (19 with desert)
