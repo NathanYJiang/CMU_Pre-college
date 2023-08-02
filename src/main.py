@@ -19,6 +19,8 @@ def restart(app):
 
 def redrawAll(app):
     app.board.draw(app)
+    drawImage(app.dice[1], 620, 550)
+    drawImage(app.dice[2], 700, 550)
 
     # random settlement/city
     app.board.drawSettlement(*getHexCoords(app, 8, 1), fill=app.colors[0])
