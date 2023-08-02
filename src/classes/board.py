@@ -73,6 +73,7 @@ class Board:
             self.numbers += [i] * 2
         self.numbers += [12]
 
+        # add a tile and number to each hexagon of the board
         for (px, py) in self.centers:
             tile = random.choice(self.tiles)
             self.tiles.remove(tile)
@@ -84,16 +85,17 @@ class Board:
             self.numbers.remove(number)
 
             self.centers[(px, py)] = (tile, number)
-
+        
+        # test
         for (px, py) in self.centers:
-            print(self.centers[(px, py)][0], self.centers[(px, py)][1])
+            print(self.centers[(px, py)])
 
     def draw(self, app):
         self.drawGrid(app)
         self.drawCells(app)
 
     def drawCells(self, app):
-        for i in range(4, 9, 2):
+        for (px, py) in self.centers:
             pass
 
     def drawGrid(self, app):
