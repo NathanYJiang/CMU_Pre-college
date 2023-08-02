@@ -1,19 +1,13 @@
 from utils.hexCoords import *
+import random
 
-class Port:
-    def __init__(t, w):
-        self.t = t
-        self.whatever = w
-
-def makeRandomPort():
-    return Port(a,b)
 class Board:
     def __init__(self):
         self.coords = set()
-        self.centers = set()
+        self.centers = dict()
         self.midpoints = set()
         self.buildings = dict()
-        
+
         # port coordinates (fixed points)
         self.ports = {
             (3, 2.5): None, 
@@ -54,7 +48,7 @@ class Board:
                 if (((px % 2 == 1 and py % 2 == 1) 
                     or (px % 2 == 0 and py % 2 == 0)) 
                     and px + py > 0 and px - py < 11 and py > -3):
-                    self.centers.add((px, py - 0.5))
+                    self.centers[(px, py - 0.5)] = None
         
         # midpoint calculations for roads
         for (px1, py1) in self.coords:
@@ -70,7 +64,7 @@ class Board:
         # tiles (19 with desert)
         self.tiles = (['desert'] + ['wheat'] * 4 + ['sheep'] * 4 + ['wood'] * 4 
                      + ['brick'] * 3 + ['ore'] * 3)
-        
+
         # numbers (18 because no number on desert)
         self.numbers = [2]
         for i in range(3, 7):
@@ -79,6 +73,20 @@ class Board:
             self.numbers += [i] * 2
         self.numbers += [12]
 
+        for (px, py) in self.centers:
+            tile = random.choice(self.tiles)
+            self.tiles.remove(tile)
+            if tile == 'desert':
+                self.centers[(px, py)] = (tile, -1)
+                continue
+
+            number = random.choice(self.numbers)
+            self.numbers.remove(number)
+
+            self.centers[(px, py)] = (tile, number)
+
+        for (px, py) in self.centers:
+            print(self.centers[(px, py)][0], self.centers[(px, py)][1])
 
     def draw(self, app):
         self.drawGrid(app)
