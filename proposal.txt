@@ -34,4 +34,4 @@ I have backed up my code on GitHub:
 https://github.com/NathanYJiang/CMU_Pre-college.
 
 Module List:
-I am not planning to use any additional modules.
+I am only using PIL.

@@ -1,4 +1,5 @@
-from utils.hexCoords import *
+from utils.hexCoords import getHexCoords, isHalf
+from cmu_graphics import *
 import random
 
 class Board:
@@ -49,8 +50,8 @@ class Board:
         
         # board setup (tiles/numbers)
         # tiles (19 with desert)
-        self.tiles = (['desert'] + ['wheat'] * 4 + ['sheep'] * 4 + ['wood'] * 4 
-                     + ['brick'] * 3 + ['ore'] * 3)
+        self.tiles = (['desert'] + ['field'] * 4 + ['pasture'] * 4 + 
+                      ['forest'] * 4 + ['hill'] * 3 + ['mountain'] * 3)
 
         # numbers (18 because no number on desert)
         self.numbers = [2]
@@ -75,17 +76,28 @@ class Board:
             self.centers[(px, py)] = (tile, number)
 
     def draw(self, app):
+        # draw the surrounding water
+        drawRect(0, 0, app.width, app.height, fill='lightBlue')
+
+        self.drawTiles(app)
         self.drawGrid(app)
         self.drawCells(app)
-
+    
+    def drawTiles(self, app):
+        for px, py in self.centers:
+            (x, y) = getHexCoords(app, px, py)
+            drawCircle(x, y, 5, fill='magenta')
+            (tile, number) = self.centers[(px, py)]
+            drawImage(app.tiles[tile], x, y, align='center')
+            if number == -1:
+                continue
+            drawImage(app.tokens[number], x, y, align='center')
+    
     def drawCells(self, app):
         for (px, py) in self.centers:
             pass
 
     def drawGrid(self, app):
-        # draw the surrounding water
-        drawRect(0, 0, app.width, app.height, fill='lightBlue')
-
         # draw the grid
         for (px, py) in self.coords:
             # draw land connecting the hexagons
@@ -106,6 +118,7 @@ class Board:
     
     def drawLand(self, app, x1, y1, x2, y2):
         # dont allow coords with both x and y as .5
+        # (not really necessary, just a safety check)
         if (isHalf(x1) and isHalf(y1)) or isHalf(x2) and isHalf(y2):
             return
         

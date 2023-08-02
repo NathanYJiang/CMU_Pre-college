@@ -30,8 +30,7 @@ def getHexCoords(app, px, py):
             x1, y1 = getHexCoords(app, px, math.floor(py))
             x2, y2 = getHexCoords(app, px, math.ceil(py))
             return (x1 + x2) / 2, (y1 + y2) / 2
-
-
+    
 # check if x has a 0.5
 def isHalf(x):
     return almostEqual(x % 1, 0.5)

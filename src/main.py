@@ -18,15 +18,13 @@ def restart(app):
 
 
 def redrawAll(app):
-    drawImage(app.tokens[2], 100, 100, align='center')
     app.board.draw(app)
+
+    # random settlement/city
     app.board.drawSettlement(*getHexCoords(app, 8, 1), fill=app.colors[0])
     app.board.drawCity(*getHexCoords(app, 8, 2), fill=app.colors[1])
-    for x, y in app.board.centers:
-        (hx, hy) = getHexCoords(app, x, y)
-        drawCircle(hx, hy, 5, fill='magenta')
-        drawImage(app.tokens[2], hx, hy, align='center')
 
+    # top left circles
     drawCircle(10, 10, 10, fill=app.colors[0])
     drawCircle(10, 30, 10, fill=app.colors[1])
     drawCircle(10, 50, 10, fill=app.colors[2])
