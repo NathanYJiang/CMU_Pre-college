@@ -3,7 +3,7 @@ from cmu_graphics import CMUImage
 
 # credit for number tokens goes to: https://catanworldexplorers.fandom.com/wiki/Settlement
 # credit for other images goes to: https://github.com/BryantCabrera/Settlers-of-Catan/tree/master/resources/imgs
-def getImage(app):
+def getImages(app):
     # tokens
     app.tokens = dict()
     for i in range(2, 13):

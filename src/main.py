@@ -1,7 +1,7 @@
 from classes.board import Board
 from utils.hexCoords import getHexCoords
 from cmu_graphics import *
-from utils.images import getImage
+from utils.images import getImages
 
 def onAppStart(app):
     app.s = 70
@@ -14,7 +14,7 @@ def onAppStart(app):
 
 def restart(app):
     app.board = Board()
-    getImage(app)
+    getImages(app)
 
 
 def redrawAll(app):
