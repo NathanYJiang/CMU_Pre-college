@@ -8,19 +8,6 @@ class Board:
         self.midpoints = set()
         self.buildings = dict()
 
-        # port coordinates (fixed points)
-        self.ports = {
-            (3, 2.5): None, 
-            (7, 2.5): None, 
-            (10, 1.5): None, 
-            (12, -0.5): None, 
-            (10, -2.5): None, 
-            (7, -3.5): None, 
-            (3, -3.5): None, 
-            (1, -1.5): None, 
-            (1, 0.5): None
-        }
-
         # calculate all coords
         for py in range(-3, 3):
             for px in range(1, 12):
@@ -79,6 +66,7 @@ class Board:
             self.tiles.remove(tile)
             if tile == 'desert':
                 self.centers[(px, py)] = (tile, -1)
+                self.robber = (px, py)
                 continue
 
             number = random.choice(self.numbers)
