@@ -73,10 +73,6 @@ class Board:
             self.numbers.remove(number)
 
             self.centers[(px, py)] = (tile, number)
-        
-        # test
-        for (px, py) in self.centers:
-            print(self.centers[(px, py)])
 
     def draw(self, app):
         self.drawGrid(app)
