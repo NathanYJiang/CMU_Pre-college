@@ -30,6 +30,8 @@ def redrawAll(app):
     # random settlement/city
     app.board.drawSettlement(*getHexCoords(app, 8, 1), fill=app.colors[0])
     app.board.drawCity(*getHexCoords(app, 8, 2), fill=app.colors[1])
+    drawCircle(50, 50, 17, fill=app.colors[0])
+    drawImage(app.icon, 50, 50, align='center')
 
 
 runApp(width=1400, height=850)

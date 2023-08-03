@@ -28,5 +28,10 @@ def getImages(app):
         dice = Image.open(f'images/dice{i}.png')
         dice.thumbnail((70, 70))
         app.dice[i] = CMUImage(dice)
+    
+    # player icon
+    icon = Image.open('images/playericon.png')
+    icon.thumbnail((50, 50))
+    app.icon = CMUImage(icon)
 
 
