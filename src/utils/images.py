@@ -1,4 +1,4 @@
-from PIL import Image, ImageOps
+from PIL import Image
 from cmu_graphics import CMUImage
 
 # credit for number tokens goes to: https://catanworldexplorers.fandom.com/wiki/Settlement
@@ -21,12 +21,10 @@ def getImages(app):
         app.tiles[resource] = CMUImage(tile)
     
     # dice
-    # border code modified from https://stackoverflow.com/questions/11142851/adding-borders-to-an-image-using-python 
     app.dice = dict()
     for i in range(1, 7):
-        dice = Image.open(f'images/dice-{i}.png')
-        diceWithBorder = ImageOps.expand(dice, border=10, fill='black')
-        diceWithBorder.thumbnail((70, 70))
-        app.dice[i] = CMUImage(diceWithBorder)
+        dice = Image.open(f'images/dice{i}.png')
+        dice.thumbnail((70, 70))
+        app.dice[i] = CMUImage(dice)
 
 

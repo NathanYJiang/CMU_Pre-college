@@ -20,18 +20,11 @@ def restart(app):
 def redrawAll(app):
     app.board.draw(app)
     drawImage(app.dice[1], 630, 580)
-    drawImage(app.dice[2], 710, 580)
+    drawImage(app.dice[5], 710, 580)
 
     # random settlement/city
     app.board.drawSettlement(*getHexCoords(app, 8, 1), fill=app.colors[0])
     app.board.drawCity(*getHexCoords(app, 8, 2), fill=app.colors[1])
-
-    # top left circles
-    drawCircle(10, 10, 10, fill=app.colors[0])
-    drawCircle(10, 30, 10, fill=app.colors[1])
-    drawCircle(10, 50, 10, fill=app.colors[2])
-    drawCircle(10, 70, 10, fill=app.colors[3])
-    
 
 
 runApp(width=1400, height=850)
