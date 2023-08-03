@@ -30,8 +30,10 @@ def getImages(app):
         app.dice[i] = CMUImage(dice)
     
     # player icon
-    icon = Image.open('images/playericon.png')
-    icon.thumbnail((50, 50))
-    app.icon = CMUImage(icon)
+    app.icons = dict()
+    for i in range(1, app.numPlayers + 1):
+        icon = Image.open(f'images/p{i}icon.png')
+        icon.thumbnail((60, 60))
+        app.icons[i] = CMUImage(icon)
 
 
