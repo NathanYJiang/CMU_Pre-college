@@ -2,6 +2,7 @@ from utils.hexCoords import getHexCoords, isHalf
 from cmu_graphics import *
 import random
 
+
 class Board:
     def __init__(self):
         self.coords = set()
@@ -78,7 +79,7 @@ class Board:
     def draw(self, app):
         # draw the surrounding water
         drawRect(0, 0, app.width, app.height, fill='lightBlue')
-        
+
         self.drawTiles(app)
         self.drawGrid(app)
         self.drawCells(app)

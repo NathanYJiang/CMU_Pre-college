@@ -1,7 +1,9 @@
 from PIL import Image
 from cmu_graphics import CMUImage
 
+
 # credit for number tokens goes to: https://catanworldexplorers.fandom.com/wiki/Settlement
+# credit for dice images goes to: https://game-icons.net/1x1/delapouite/dice-six-faces-one.html
 # credit for other images goes to: https://github.com/BryantCabrera/Settlers-of-Catan/tree/master/resources/imgs
 def getImages(app):
     # tokens

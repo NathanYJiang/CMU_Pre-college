@@ -2,6 +2,8 @@ from classes.board import Board
 from utils.hexCoords import getHexCoords
 from cmu_graphics import *
 from utils.images import getImages
+import random
+
 
 def onAppStart(app):
     app.s = 70
@@ -19,8 +21,11 @@ def restart(app):
 
 def redrawAll(app):
     app.board.draw(app)
-    drawImage(app.dice[1], 630, 580)
-    drawImage(app.dice[5], 710, 580)
+    dice1 = random.randint(1, 6)
+    dice2 = random.randint(1, 6)
+    drawImage(app.dice[dice1], 630, 580)
+    drawImage(app.dice[dice2], 710, 580)
+    roll = dice1 + dice2
 
     # random settlement/city
     app.board.drawSettlement(*getHexCoords(app, 8, 1), fill=app.colors[0])
