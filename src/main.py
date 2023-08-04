@@ -17,6 +17,7 @@ def onAppStart(app):
 def restart(app):
     app.numPlayers = 2
     app.board = Board()
+    
     getImages(app)
 
 

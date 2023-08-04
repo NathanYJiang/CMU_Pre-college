@@ -5,9 +5,10 @@ class Button:
         self.width = width
         self.height = height
 
-    def isClicked(self, mouseX, mouseY):
-        return ((self.x <= mouseX <= self.x + self.width) 
-            and (self.y <= mouseY <= self.y + self.height))
+    def onClick(self, mouseX, mouseY):
+        # not clicked, so return
+        if not ((self.x <= mouseX <= self.x + self.width) 
+            and (self.y <= mouseY <= self.y + self.height)): return
+        
+        
     
-    def onClick(self):
-        pass
