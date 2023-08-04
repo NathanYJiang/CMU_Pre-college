@@ -10,6 +10,13 @@ class Board:
         self.centers = dict()
         self.midpoints = set()
         self.buildings = dict()
+        self.tileToResource = {
+            'forest': 'lumber',
+            'hill': 'brick',
+            'pasture': 'wool',
+            'field': 'grain',
+            'mountain': 'ore'
+        }
 
         # calculate all coords
         for py in range(-3, 3):
@@ -100,12 +107,12 @@ class Board:
             if self.buildings[(px, py)] != None:
                 building, color = self.buildings[(px, py)]
                 if building == 's':
-                    app.board.drawSettlement(*getHexCoords(app, px, py), 
+                    self.drawSettlement(*getHexCoords(app, px, py), 
                                              fill=color)
                 elif building == 'c':
-                    app.board.drawCity(*getHexCoords(app, px, py), fill=color)
+                    self.drawCity(*getHexCoords(app, px, py), fill=color)
                 else:
-                    app.board.drawRoad(app, px, py, color)
+                    self.drawRoad(app, px, py, color)
 
     def drawGrid(self, app):
         # draw the grid

@@ -11,6 +11,7 @@ def onAppStart(app):
     app.startY = 300
     app.colors = [rgb(237, 1, 1), rgb(15, 152, 245), rgb(246, 247, 239), 
                   rgb(246, 139, 46)]
+    app.resources = {'wood', 'brick', 'sheep', 'wheat', 'ore'}
     restart(app)
 
 
@@ -28,15 +29,13 @@ def redrawAll(app):
     drawImage(app.dice[dice1], 630, 590)
     drawImage(app.dice[dice2], 710, 590)
     roll = dice1 + dice2
-    
+
     # random settlement/city
     app.board.drawSettlement(*getHexCoords(app, 8, 1), fill=app.colors[0])
     app.board.drawCity(*getHexCoords(app, 8, 2), fill=app.colors[1])
 
     # random playericon
     drawImage(app.icons[1], 50, 50, align='center')
-
-    
 
 
 runApp(width=1400, height=850)
