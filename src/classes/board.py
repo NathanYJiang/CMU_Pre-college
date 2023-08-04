@@ -10,7 +10,7 @@ class Board:
         self.centers = dict()
         self.midpoints = set()
         self.buildings = dict()
-        self.tileToResource = {
+        self.tileToRes = {
             'forest': 'lumber',
             'hill': 'brick',
             'pasture': 'wool',
@@ -106,10 +106,10 @@ class Board:
         for (px, py) in self.buildings:
             if self.buildings[(px, py)] != None:
                 building, color = self.buildings[(px, py)]
-                if building == 's':
+                if building == 1:
                     self.drawSettlement(*getHexCoords(app, px, py), 
                                              fill=color)
-                elif building == 'c':
+                elif building == 2:
                     self.drawCity(*getHexCoords(app, px, py), fill=color)
                 else:
                     self.drawRoad(app, px, py, color)

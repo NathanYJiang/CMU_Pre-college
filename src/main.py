@@ -2,6 +2,7 @@ from classes.board import Board
 from utils.hexCoords import getHexCoords
 from cmu_graphics import *
 from utils.images import getImages
+from classes.player import Player
 import random
 
 
@@ -17,24 +18,33 @@ def onAppStart(app):
 
 def restart(app):
     app.numPlayers = 2
+    app.players = []
+    for i in range(app.numPlayers):
+        app.players.append(Player(app, i))
+
     app.board = Board()
 
     getImages(app)
 
+def onTurn(app):
+    # roll the dice (move to dice button later)
+    app.dice1 = random.randint(1, 6)
+    app.dice2 = random.randint(1, 6)
+    app.roll = app.dice1 + app.dice2
 
 def redrawAll(app):
+    # draw board
     app.board.draw(app)
-    dice1 = random.randint(1, 6)
-    dice2 = random.randint(1, 6)
-    drawImage(app.dice[dice1], 630, 590)
-    drawImage(app.dice[dice2], 710, 590)
-    roll = dice1 + dice2
 
-    # random settlement/city
+    # draw dice
+    drawImage(app.dice[app.dice1], 630, 590)
+    drawImage(app.dice[app.dice2], 710, 590)
+
+    # random settlement/city test
     app.board.drawSettlement(*getHexCoords(app, 8, 1), fill=app.colors[0])
     app.board.drawCity(*getHexCoords(app, 8, 2), fill=app.colors[1])
 
-    # random playericon
+    # random playericon test
     drawImage(app.icons[1], 50, 50, align='center')
 
 
