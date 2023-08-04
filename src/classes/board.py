@@ -1,5 +1,6 @@
 from utils.hexCoords import getHexCoords, isHalf
 from cmu_graphics import *
+from math import floor, ceil
 import random
 
 
@@ -82,7 +83,7 @@ class Board:
 
         self.drawTiles(app)
         self.drawGrid(app)
-        self.drawCells(app)
+        self.drawBuildings(app)
     
     def drawTiles(self, app):
         for px, py in self.centers:
@@ -94,9 +95,17 @@ class Board:
                 continue
             drawImage(app.tokens[number], x, y, align='center')
     
-    def drawCells(self, app):
-        for (px, py) in self.centers:
-            pass
+    def drawBuildings(self, app):
+        for (px, py) in self.buildings:
+            if self.buildings[(px, py)] != None:
+                building, color = self.buildings[(px, py)]
+                if building == 's':
+                    app.board.drawSettlement(*getHexCoords(app, px, py), 
+                                             fill=color)
+                elif building == 'c':
+                    app.board.drawCity(*getHexCoords(app, px, py), fill=color)
+                else:
+                    app.board.drawRoad(app, px, py, color)
 
     def drawGrid(self, app):
         # draw the grid
@@ -164,4 +173,9 @@ class Board:
 
         drawPolygon(rx+8, ry, rx, ry+6, rx, ry+30, rx+30, ry+30, rx+30, ry+16, 
                     rx+16, ry+16, rx+16, ry+6, fill=fill, border='black')
+    
+    def drawRoad(self, app, px, py, color):
+        drawLine(*getHexCoords(app, floor(px), floor(py)), 
+                 *getHexCoords(app, ceil(px), ceil(py)), 
+                 fill=color, lineWidth=10)
         
