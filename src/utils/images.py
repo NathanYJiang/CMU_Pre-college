@@ -1,10 +1,12 @@
-from PIL import Image, ImageFilter
 from cmu_graphics import CMUImage
+from PIL import Image, ImageFilter, ImageEnhance
 
 
 # credit for number tokens goes to: https://catanworldexplorers.fandom.com/wiki/Settlement
 # credit for dice images goes to: https://game-icons.net/1x1/delapouite/dice-six-faces-one.html
 # credit for other images goes to: https://github.com/BryantCabrera/Settlers-of-Catan/tree/master/resources/imgs
+# PIL sharpen learned from: https://pythonexamples.org/python-pillow-image-sharpen/
+# used https://tinypng.com/ to minimize images
 def getImages(app):
     # tokens
     app.tokens = dict()
@@ -13,6 +15,7 @@ def getImages(app):
         if i == 7: continue
         token = Image.open(f'images/token{i}.webp')
         token.thumbnail((50, 50))
+        token = token.filter(ImageFilter.SHARPEN)
         app.tokens[i] = CMUImage(token)
     
     # tiles
@@ -41,8 +44,6 @@ def getImages(app):
     for resource in app.resources:
         resImage = Image.open(f'images/resources--{resource}.png')
         resImage.thumbnail((50, 80))
-
-        # PIL sharpen learned from: https://pythonexamples.org/python-pillow-image-sharpen/
         resImage = resImage.filter(ImageFilter.SHARPEN)
         app.resImages[resource] = CMUImage(resImage)
 
