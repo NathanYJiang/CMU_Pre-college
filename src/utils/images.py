@@ -29,7 +29,9 @@ def getImages(app):
     app.tiles = dict()
     for resource in ['desert', 'field', 'pasture', 'forest', 'hill', 'mountain']:
         tile = Image.open(getImagePath(f'{resource}.png'))
+        tile = tile.convert('RGBA')
         tile.thumbnail((140, 140))
+        tile = tile.filter(ImageFilter.SHARPEN)
         app.tiles[resource] = CMUImage(tile)
     
     # dice
@@ -50,7 +52,7 @@ def getImages(app):
     app.resImages = dict()
     for resource in app.resources:
         resImage = Image.open(getImagePath(f'resources--{resource}.png'))
-        resImage=resImage.convert('RGBA')
+        resImage = resImage.convert('RGBA')
         resImage.thumbnail((50, 80))
         resImage = resImage.filter(ImageFilter.SHARPEN)
         app.resImages[resource] = CMUImage(resImage)
