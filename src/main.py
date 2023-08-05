@@ -23,8 +23,8 @@ def restart(app):
         app.players.append(Player(app, i))
 
     app.board = Board()
-
     getImages(app)
+    onTurn(app)
 
 def onTurn(app):
     # roll the dice (move to dice button later)
