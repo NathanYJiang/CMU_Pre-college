@@ -7,6 +7,7 @@ from PIL import Image, ImageFilter, ImageEnhance
 # credit for other images goes to: https://github.com/BryantCabrera/Settlers-of-Catan/tree/master/resources/imgs
 # PIL sharpen learned from: https://pythonexamples.org/python-pillow-image-sharpen/
 # used https://tinypng.com/ to minimize images
+
 def getImages(app):
     # tokens
     app.tokens = dict()
@@ -44,7 +45,7 @@ def getImages(app):
     for resource in app.resources:
         resImage = Image.open(f'images/resources--{resource}.png')
         resImage.thumbnail((50, 80))
-        resImage = resImage.filter(ImageFilter.SHARPEN)
+        #resImage = resImage.filter(ImageFilter.SHARPEN)
         app.resImages[resource] = CMUImage(resImage)
 
 
