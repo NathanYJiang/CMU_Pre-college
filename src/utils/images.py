@@ -20,41 +20,37 @@ def getImages(app):
     for i in range(2, 13):
         # 7 is the robber!
         if i == 7: continue
+        
         token = Image.open(getImagePath(f'token{i}.webp'))
-        token.thumbnail((50, 50))
-        token = token.filter(ImageFilter.SHARPEN)
-        app.tokens[i] = CMUImage(token)
+        app.tokens[i] = processImage(token, (50, 50))
     
     # tiles
     app.tiles = dict()
     for resource in ['desert', 'field', 'pasture', 'forest', 'hill', 'mountain']:
         tile = Image.open(getImagePath(f'{resource}.png'))
-        tile = tile.convert('RGBA')
-        tile.thumbnail((140, 140))
-        tile = tile.filter(ImageFilter.SHARPEN)
-        app.tiles[resource] = CMUImage(tile)
+        app.tiles[resource] = processImage(tile, (140, 140))
     
     # dice
     app.dice = dict()
     for i in range(1, 7):
         dice = Image.open(getImagePath(f'dice{i}.png'))
-        dice.thumbnail((75, 75))
-        app.dice[i] = CMUImage(dice)
+        app.dice[i] = processImage(dice, (75, 75))
     
     # player icon
     app.icons = []
     for i in range(app.numPlayers):
         icon = Image.open(getImagePath(f'p{i+1}icon.png'))
-        icon.thumbnail((60, 60))
-        app.icons.append(CMUImage(icon))
+        app.icons.append(processImage(icon, (60, 60)))
 
     # resources
     app.resImages = dict()
     for resource in app.resources:
         resImage = Image.open(getImagePath(f'resources--{resource}.png'))
-        resImage = resImage.convert('RGBA')
-        resImage.thumbnail((50, 80))
-        resImage = resImage.filter(ImageFilter.SHARPEN)
-        app.resImages[resource] = CMUImage(resImage)
+        app.resImages[resource] = processImage(resImage, (50, 80))
 
 
+def processImage(image, size):
+    image = image.convert('RGBA')
+    image.thumbnail(size)
+    image = image.filter(ImageFilter.SHARPEN)
+    return CMUImage(image)
