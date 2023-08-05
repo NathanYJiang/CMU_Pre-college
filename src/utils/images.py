@@ -1,4 +1,4 @@
-from PIL import Image
+from PIL import Image, ImageFilter
 from cmu_graphics import CMUImage
 
 
@@ -30,13 +30,20 @@ def getImages(app):
         app.dice[i] = CMUImage(dice)
     
     # player icon
-    app.icons = dict()
-    for i in range(1, app.numPlayers + 1):
-        icon = Image.open(f'images/p{i}icon.png')
+    app.icons = []
+    for i in range(app.numPlayers):
+        icon = Image.open(f'images/p{i+1}icon.png')
         icon.thumbnail((60, 60))
-        app.icons[i] = CMUImage(icon)
+        app.icons.append(CMUImage(icon))
 
     # resources
-    app.resources
+    app.resImages = dict()
+    for resource in app.resources:
+        resImage = Image.open(f'images/resources--{resource}.png')
+        resImage.thumbnail((50, 80))
+
+        # PIL sharpen learned from: https://pythonexamples.org/python-pillow-image-sharpen/
+        resImage = resImage.filter(ImageFilter.SHARPEN)
+        app.resImages[resource] = CMUImage(resImage)
 
 

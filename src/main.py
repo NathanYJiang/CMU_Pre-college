@@ -13,7 +13,7 @@ def onAppStart(app):
     app.startY = 300
     app.colors = [rgb(237, 1, 1), rgb(15, 152, 245), rgb(246, 247, 239), 
                   rgb(246, 139, 46)]
-    app.resources = ['wood', 'brick', 'sheep', 'wheat', 'ore']
+    app.resources = ['lumber', 'brick', 'wool', 'grain', 'ore']
     app.tileToRes = {
         'forest': 'lumber',
         'hill': 'brick',
@@ -21,6 +21,7 @@ def onAppStart(app):
         'field': 'grain',
         'mountain': 'ore'
     }
+
     restart(app)
 
 
@@ -34,6 +35,9 @@ def restart(app):
     # make a new board and get all the images
     app.board = Board()
     getImages(app)
+
+    #TEST
+    app.board.buildings[(8, 1)] = (1, app.players[0].color)
     
     # buttons
     app.buttons = []
@@ -42,13 +46,13 @@ def restart(app):
         label = ['trade', 'dv', 'road', 'settlement', 'city', 'end'][i]
         app.buttons.append(Button(sx + 80*i, sy, label))
     
-    app.playerTurn = random.randint(0, app.numPlayers-1)
+    app.curPlayerID = random.randint(0, app.numPlayers-1)
     onTurn(app)
 
 def onTurn(app):
     # new player turn
-    app.playerTurn += 1
-    app.playerTurn %= app.numPlayers
+    app.curPlayerID += 1
+    app.curPlayerID %= app.numPlayers
 
     # roll the dice (move to dice button later)
     app.dice1 = random.randint(1, 6)
@@ -56,31 +60,33 @@ def onTurn(app):
     app.roll = app.dice1 + app.dice2
 
 def redrawAll(app):
-    curPlayer = app.players[app.playerTurn]
+    curPlayer = app.players[app.curPlayerID]
 
     # draw board
     app.board.draw(app)
 
     # draw dice
     drawImage(app.dice[app.dice1], 650, 600)
-    drawImage(app.dice[app.dice2], 730, 600)
+    drawImage(app.dice[app.dice2], 735, 600)
 
     # random settlement/city test
     app.board.drawSettlement(*getHexCoords(app, 8, 1), fill=app.colors[0])
     app.board.drawCity(*getHexCoords(app, 8, 2), fill=app.colors[1])
 
     # random playericon test
-    drawImage(app.icons[1], 50, 50, align='center')
+    drawImage(app.icons[app.curPlayerID], 50, 50, align='center')
 
     # draw player resources
     for i in range(5):
-
-
-
+        resource = app.resources[i]
+        drawImage(app.resImages[resource], 70 + 70*i, 700)
+        drawLabel(curPlayer.cards[resource], 95 + 70*i, 805, size=36, 
+                  font='monospace')
+    
+    curPlayer.getResources(app)
 
     for button in app.buttons:
         button.draw(app)
-
 
 def onMousePress(app, mouseX, mouseY):
     onTurn(app)
