@@ -13,7 +13,14 @@ def onAppStart(app):
     app.startY = 300
     app.colors = [rgb(237, 1, 1), rgb(15, 152, 245), rgb(246, 247, 239), 
                   rgb(246, 139, 46)]
-    app.resources = {'wood', 'brick', 'sheep', 'wheat', 'ore'}
+    app.resources = ['wood', 'brick', 'sheep', 'wheat', 'ore']
+    app.tileToRes = {
+        'forest': 'lumber',
+        'hill': 'brick',
+        'pasture': 'wool',
+        'field': 'grain',
+        'mountain': 'ore'
+    }
     restart(app)
 
 
@@ -31,16 +38,17 @@ def restart(app):
     # buttons
     app.buttons = []
     sx, sy = 550, 750
-    for i in range(5):
-        app.buttons.append(Button(sx + 80*i, sy))
+    for i in range(6):
+        label = ['trade', 'dv', 'road', 'settlement', 'city', 'end'][i]
+        app.buttons.append(Button(sx + 80*i, sy, label))
     
-    app.playerTurn = 0
+    app.playerTurn = random.randint(0, app.numPlayers-1)
     onTurn(app)
 
 def onTurn(app):
     # new player turn
     app.playerTurn += 1
-    app.playerTurn %= len(app.players)
+    app.playerTurn %= app.numPlayers
 
     # roll the dice (move to dice button later)
     app.dice1 = random.randint(1, 6)
@@ -48,6 +56,8 @@ def onTurn(app):
     app.roll = app.dice1 + app.dice2
 
 def redrawAll(app):
+    curPlayer = app.players[app.playerTurn]
+
     # draw board
     app.board.draw(app)
 
@@ -61,6 +71,12 @@ def redrawAll(app):
 
     # random playericon test
     drawImage(app.icons[1], 50, 50, align='center')
+
+    # draw player resources
+    for i in range(5):
+
+
+
 
     for button in app.buttons:
         button.draw(app)

@@ -1,17 +1,17 @@
 from cmu_graphics import *
 
 class Button:
-    def __init__(self, x, y):
+    def __init__(self, x, y, label):
         self.x = x
         self.y = y
         self.width = 70
         self.height = 70
+        self.label = label
 
     def draw(self, app):
-        
         drawRect(self.x, self.y, self.width, self.height, 
                  fill='white', border='black')
-        drawLabel('hello', self.x+self.width/2, self.y+self.height/2)
+        drawLabel(self.label, self.x+self.width/2, self.y+self.height/2)
 
     def onClick(self, mouseX, mouseY):
         # not clicked, so return

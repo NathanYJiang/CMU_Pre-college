@@ -10,13 +10,6 @@ class Board:
         self.centers = dict()
         self.midpoints = set()
         self.buildings = dict()
-        self.tileToRes = {
-            'forest': 'lumber',
-            'hill': 'brick',
-            'pasture': 'wool',
-            'field': 'grain',
-            'mountain': 'ore'
-        }
 
         # calculate all coords
         for py in range(-3, 3):

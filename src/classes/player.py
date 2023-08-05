@@ -20,7 +20,7 @@ class Player:
                         building, color = app.board.buildings[(px + dx, 
                                                                floor(py) + dy)]
                         if color == self.color:
-                            self.cards[app.board.tileToRes[tile]] += building
+                            self.cards[app.tileToRes[tile]] += building
 
     def makeBuilding(self, app, px, py, building):
         app.board.buildings[(px, py)] = (building, self.color)

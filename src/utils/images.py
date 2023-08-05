@@ -36,4 +36,7 @@ def getImages(app):
         icon.thumbnail((60, 60))
         app.icons[i] = CMUImage(icon)
 
+    # resources
+    app.resources
+
 
