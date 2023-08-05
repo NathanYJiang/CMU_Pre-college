@@ -157,4 +157,36 @@ cython_debug/
 #  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
-#.idea/
+#.idea/a
+
+# This file was created automatically, do not edit it directly.
+
+# Metadata
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Files that might appear in the Root of a Volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+
+# iCloud
+*.icloud
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Debugging Symbols
+*.dSYM
+
+# Cache
+.cache/**
+cache/**
