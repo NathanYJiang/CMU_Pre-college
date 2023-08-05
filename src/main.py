@@ -38,6 +38,7 @@ def restart(app):
 
     #TEST
     app.board.buildings[(8, 1)] = (1, app.players[0].color)
+    app.board.buildings[(8, 2)] = (2, app.players[1].color)
     
     # buttons
     app.buttons = []
