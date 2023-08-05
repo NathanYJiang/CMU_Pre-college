@@ -78,13 +78,15 @@ def redrawAll(app):
     drawImage(app.icons[app.curPlayerID], 50, 50, align='center')
 
     # draw player resources
+    drawRect(55, 685, 360, 150, fill=curPlayer.color, border='black')
     for i in range(5):
         resource = app.resources[i]
         drawImage(app.resImages[resource], 70 + 70*i, 700)
         drawLabel(curPlayer.cards[resource], 95 + 70*i, 805, size=36, 
                   font='monospace')
     
-    curPlayer.getResources(app)
+    for player in app.players:
+        player.getResources(app)
 
     for button in app.buttons:
         button.draw(app)
