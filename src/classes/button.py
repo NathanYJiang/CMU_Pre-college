@@ -1,14 +1,24 @@
+from cmu_graphics import *
+
 class Button:
-    def __init__(self, x, y, width, height):
+    def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.width = width
-        self.height = height
+        self.width = 70
+        self.height = 70
+
+    def draw(self, app):
+        
+        drawRect(self.x, self.y, self.width, self.height, 
+                 fill='white', border='black')
+        drawLabel('hello', self.x+self.width/2, self.y+self.height/2)
 
     def onClick(self, mouseX, mouseY):
         # not clicked, so return
         if not ((self.x <= mouseX <= self.x + self.width) 
             and (self.y <= mouseY <= self.y + self.height)): return
         
+
         
+
     

@@ -3,6 +3,7 @@ from utils.hexCoords import getHexCoords
 from cmu_graphics import *
 from utils.images import getImages
 from classes.player import Player
+from classes.button import Button
 import random
 
 
@@ -17,16 +18,30 @@ def onAppStart(app):
 
 
 def restart(app):
+    # number of players (fixed at 2 rn)
     app.numPlayers = 2
     app.players = []
     for i in range(app.numPlayers):
         app.players.append(Player(app, i))
-
+    
+    # make a new board and get all the images
     app.board = Board()
     getImages(app)
+    
+    # buttons
+    app.buttons = []
+    sx, sy = 550, 750
+    for i in range(5):
+        app.buttons.append(Button(sx + 80*i, sy))
+    
+    app.playerTurn = 0
     onTurn(app)
 
 def onTurn(app):
+    # new player turn
+    app.playerTurn += 1
+    app.playerTurn %= len(app.players)
+
     # roll the dice (move to dice button later)
     app.dice1 = random.randint(1, 6)
     app.dice2 = random.randint(1, 6)
@@ -37,8 +52,8 @@ def redrawAll(app):
     app.board.draw(app)
 
     # draw dice
-    drawImage(app.dice[app.dice1], 630, 590)
-    drawImage(app.dice[app.dice2], 710, 590)
+    drawImage(app.dice[app.dice1], 650, 600)
+    drawImage(app.dice[app.dice2], 730, 600)
 
     # random settlement/city test
     app.board.drawSettlement(*getHexCoords(app, 8, 1), fill=app.colors[0])
@@ -46,6 +61,13 @@ def redrawAll(app):
 
     # random playericon test
     drawImage(app.icons[1], 50, 50, align='center')
+
+    for button in app.buttons:
+        button.draw(app)
+
+
+def onMousePress(app, mouseX, mouseY):
+    onTurn(app)
 
 
 runApp(width=1400, height=850)
