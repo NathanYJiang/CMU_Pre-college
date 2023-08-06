@@ -45,7 +45,7 @@ def restart(app):
     
     # buttons
     app.buttons = []
-    sx, sy = 450, 750
+    sx, sy = 420, 735
     for i in range(6):
         label = ['trade', 'dv', 'road', 'settlement', 'city', 'end'][i]
         app.buttons.append(Button(sx + 80*i, sy, label))
@@ -79,8 +79,8 @@ def redrawAll(app):
     app.board.draw(app)
 
     # draw dice
-    drawImage(app.dice[app.dice1], 665, 600)
-    drawImage(app.dice[app.dice2], 750, 600)
+    drawImage(app.dice[app.dice1], 670, 610)
+    drawImage(app.dice[app.dice2], 755, 610)
 
     # random settlement/city test
     app.board.drawSettlement(*getHexCoords(app, 8, 1), fill=app.colors[0])
@@ -103,7 +103,7 @@ def redrawAll(app):
     
     # draw messages
     for i in range(len(app.messages)):
-        drawLabel(app.messages[i], 1000, 50 + 25*i, size=16)
+        drawLabel(app.messages[i], 1100, 50 + 25*i, size=16)
 
 def onMousePress(app, mouseX, mouseY):
     # check actions of all buttons
