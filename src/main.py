@@ -5,7 +5,7 @@ from utils.images import getImages
 from classes.player import Player
 from classes.button import Button
 import random
-
+from utils.messages import updateMessages
 
 def onAppStart(app):
     app.s = 70
@@ -21,11 +21,14 @@ def onAppStart(app):
         'field': 'grain',
         'mountain': 'ore'
     }
-
+    
     restart(app)
 
 
 def restart(app):
+    # new game status
+    app.gameState = 'new game'
+
     # number of players (fixed at 2 rn)
     app.numPlayers = 2
     app.players = []
@@ -42,7 +45,7 @@ def restart(app):
     
     # buttons
     app.buttons = []
-    sx, sy = 550, 750
+    sx, sy = 450, 750
     for i in range(6):
         label = ['trade', 'dv', 'road', 'settlement', 'city', 'end'][i]
         app.buttons.append(Button(sx + 80*i, sy, label))
@@ -50,25 +53,34 @@ def restart(app):
     app.curPlayerID = random.randint(0, app.numPlayers-1)
     onTurn(app)
 
+    # messages
+    app.messages = ['Welcome to Settlers of Ketan']
+    for i in range(100):
+        updateMessages(app, 'hello lol this is a test brrrrrrrrrrrrrrrrrr')
+        
+
 def onTurn(app):
     # new player turn
     app.curPlayerID += 1
     app.curPlayerID %= app.numPlayers
+    app.curPlayer = app.players[app.curPlayerID]
 
-    # roll the dice (move to dice button later)
+    # roll the dice
     app.dice1 = random.randint(1, 6)
     app.dice2 = random.randint(1, 6)
     app.roll = app.dice1 + app.dice2
 
-def redrawAll(app):
-    curPlayer = app.players[app.curPlayerID]
+    # give players resources
+    for player in app.players:
+        player.getResources(app)
 
+def redrawAll(app):
     # draw board
     app.board.draw(app)
 
     # draw dice
-    drawImage(app.dice[app.dice1], 650, 600)
-    drawImage(app.dice[app.dice2], 735, 600)
+    drawImage(app.dice[app.dice1], 665, 600)
+    drawImage(app.dice[app.dice2], 750, 600)
 
     # random settlement/city test
     app.board.drawSettlement(*getHexCoords(app, 8, 1), fill=app.colors[0])
@@ -78,21 +90,27 @@ def redrawAll(app):
     drawImage(app.icons[app.curPlayerID], 50, 50, align='center')
 
     # draw player resources
-    drawRect(55, 685, 360, 150, fill=curPlayer.color, border='black')
+    drawRect(30, 670, 360, 150, fill=app.curPlayer.color, border='black')
     for i in range(5):
         resource = app.resources[i]
-        drawImage(app.resImages[resource], 70 + 70*i, 700)
-        drawLabel(curPlayer.cards[resource], 95 + 70*i, 805, size=36, 
+        drawImage(app.resImages[resource], 45 + 70*i, 685)
+        drawLabel(app.curPlayer.cards[resource], 70 + 70*i, 790, size=36, 
                   font='monospace')
     
-    for player in app.players:
-        player.getResources(app)
-
+    # draw buttons
     for button in app.buttons:
         button.draw(app)
+    
+    # draw messages
+    for i in range(len(app.messages)):
+        drawLabel(app.messages[i], 1000, 50 + 25*i, size=16)
 
 def onMousePress(app, mouseX, mouseY):
+    # check actions of all buttons
+    for button in app.buttons:
+        button.buttonPressed(mouseX, mouseY)
+
     onTurn(app)
 
 
-runApp(width=1400, height=850)
+runApp(width=1350, height=850)

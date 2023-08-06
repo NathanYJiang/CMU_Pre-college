@@ -1,4 +1,5 @@
 from cmu_graphics import *
+from utils.actions import action
 
 class Button:
     def __init__(self, x, y, label):
@@ -13,10 +14,12 @@ class Button:
                  fill='white', border='black')
         drawLabel(self.label, self.x+self.width/2, self.y+self.height/2)
 
-    def onClick(self, mouseX, mouseY):
+    def buttonPressed(self, mouseX, mouseY):
         # not clicked, so return
         if not ((self.x <= mouseX <= self.x + self.width) 
             and (self.y <= mouseY <= self.y + self.height)): return
+        
+        action(self, app)
         
 
         
