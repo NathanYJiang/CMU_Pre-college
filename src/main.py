@@ -56,7 +56,7 @@ def restart(app):
     # messages
     app.messages = ['Welcome to Settlers of Ketan']
     for i in range(100):
-        updateMessages(app, 'hello lol this is a test brrrrrrrrrrrrrrrrrr')
+        updateMessages(app, 'hello lol this is a test brrrrrrrrrrrrdrrrrrrrrrr')
         
 
 def onTurn(app):
@@ -73,6 +73,9 @@ def onTurn(app):
     # give players resources
     for player in app.players:
         player.getResources(app)
+    
+    app.gameState = 'player turn'
+
 
 def redrawAll(app):
     # draw board
@@ -103,14 +106,35 @@ def redrawAll(app):
     
     # draw messages
     for i in range(len(app.messages)):
-        drawLabel(app.messages[i], 1100, 50 + 25*i, size=16)
+        drawLabel(app.messages[i], 1080, 50 + 25*i, size=16)
+    
+    # draw circles for placement
+    if app.gameState[:5] == 'build':
+        if app.gameState[6:] == 'road':
+            for (px, py) in app.board.midpoints:
+                drawCircle(*getHexCoords(app, px, py), 10, fill='yellow', 
+                           opacity=60)
+        else:
+            for (px, py) in app.board.centers:
+                drawCircle(*getHexCoords(app, px, py), 10, fill='yellow', 
+                           opacity=60)
+
 
 def onMousePress(app, mouseX, mouseY):
-    # check actions of all buttons
-    for button in app.buttons:
-        button.buttonPressed(mouseX, mouseY)
+    # on player turn, check actions of all buttons
+    if app.gameState == 'player turn':
+        for button in app.buttons:
+            button.onClick(mouseX, mouseY)
+    
+    # player has acted, so check what they want
+    else:
+        if app.gameState == 'build settlement':
+            for (px, py) in app.board.centers:
+                if (distance(mouseX, mouseY, *getHexCoords(app, px, py)) <= 10 
+                    and app.board.buildings[()]:
 
-    onTurn(app)
+
+    #onTurn(app)
 
 
 runApp(width=1350, height=850)

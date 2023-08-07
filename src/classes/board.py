@@ -178,4 +178,10 @@ class Board:
         drawLine(*getHexCoords(app, floor(px), floor(py)), 
                  *getHexCoords(app, ceil(px), ceil(py)), 
                  fill=color, lineWidth=10)
+    
+    def checkNeighbors(self, px, py):
+        for dx in range(-1, 2):
+            for dy in range(-1, 1):
+                nx, ny = px + dx, py + dy
+                if (nx, ny) in self.centers
         
