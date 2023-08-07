@@ -39,10 +39,6 @@ def restart(app):
     # make a new board and get all the images
     app.board = Board()
     getImages(app)
-
-    # TEST
-    app.board.buildings[(8, 1)] = (1, app.players[0].color)
-    app.board.buildings[(8, 2)] = (2, app.players[1].color)
     
     # buttons
     app.buttons = []
@@ -86,7 +82,7 @@ def redrawAll(app):
     drawImage(app.dice[app.dice1], 670, 610)
     drawImage(app.dice[app.dice2], 755, 610)
 
-    # random playericon test
+    # draw player icon
     drawImage(app.icons[app.curPlayerID], 50, 50, align='center')
 
     # draw player resources
@@ -126,7 +122,7 @@ def onMousePress(app, mouseX, mouseY):
 
         if app.gameState == 'end turn':
             nextTurn(app)
-            
+
     # player has acted, so check what they want to do
     else:
         if app.gameState == 'build road':
