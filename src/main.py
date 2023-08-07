@@ -6,7 +6,7 @@ from classes.player import Player
 from classes.button import Button
 import random
 from utils.messages import updateMessages
-from utils.actions import buildRoad, buildSettlement, buildCity
+from utils.actions import buildRoad, buildSettlement, buildCity, moveRobber
 
 def onAppStart(app):
     app.s = 70
@@ -29,6 +29,7 @@ def onAppStart(app):
 def restart(app):
     # new game status
     app.gameState = 'new game'
+    app.gameOver = False
 
     # number of players (fixed at 2 rn)
     app.numPlayers = 2
@@ -43,7 +44,7 @@ def restart(app):
     # buttons
     app.buttons = []
     sx, sy = 420, 735
-    
+
     # missing trade and dv
     labels = ['road', 'settlement', 'city', 'end']
     for i in range(len(labels)): 
@@ -70,11 +71,17 @@ def nextTurn(app):
     app.dice2 = random.randint(1, 6)
     app.roll = app.dice1 + app.dice2
 
-    # give players resources
-    for player in app.players:
-        player.getResources(app)
-    
-    app.gameState = 'player turn'
+    # rolled a robber!
+    if app.roll == 7:
+        updateMessages(app, f'Player {app.curPlayerID+1} rolled 7')
+        app.gameState = 'move robber'
+    else:
+        updateMessages(app, f'Player {app.curPlayerID+1} rolled {app.roll}')
+        # give players resources
+        for player in app.players:
+            player.getResources(app)
+        
+        app.gameState = 'player turn'
 
 
 def redrawAll(app):
@@ -114,9 +121,15 @@ def redrawAll(app):
             for (px, py) in app.board.coords:
                 drawCircle(*getHexCoords(app, px, py), 12, fill='yellow', 
                            opacity=60)
+    elif app.gameState == 'move robber':
+        for (px, py) in app.board.centers:
+            drawCircle(*getHexCoords(app, px, py), 18, fill='yellow', 
+                       opacity=60)
 
 
 def onMousePress(app, mouseX, mouseY):
+    if app.gameOver: return
+
     # on player turn, check actions of all buttons
     if app.gameState == 'player turn':
         for button in app.buttons:
@@ -129,12 +142,29 @@ def onMousePress(app, mouseX, mouseY):
     # player has acted, so check what they want to do
     else:
         if app.gameState == 'build road':
-            buildRoad(app, mouseX, mouseY)
+            if buildRoad(app, mouseX, mouseY):
+                app.gameState = 'player turn'
         elif app.gameState == 'build settlement':
-            buildSettlement(app, mouseX, mouseY)
+            if buildSettlement(app, mouseX, mouseY):
+                app.gameState = 'player turn'
         elif app.gameState == 'build city':
-            buildCity(app, mouseX, mouseY)
+            if buildCity(app, mouseX, mouseY):
+                app.gameState = 'player turn'
+        elif app.gameState == 'move robber':
+            if moveRobber(app, mouseX, mouseY):
+                app.gameState = 'player turn'
+        
+        if app.curPlayer.vp >= 10:
+            updateMessages(app, f'Player {app.curPlayerID+1} wins!')
+            updateMessages(app, 'Press n for a new game')
+            app.gameOver = True
 
+
+def onKeyPress(app, key):
+    if app.gameOver:
+        if key == 'n':
+            restart(app)
+    elif app.gameState != 'move robber' and key == 'escape':
         app.gameState = 'player turn'
 
 

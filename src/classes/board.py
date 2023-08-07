@@ -69,7 +69,7 @@ class Board:
             self.tiles.remove(tile)
             if tile == 'desert':
                 self.centers[(px, py)] = (tile, -1)
-                self.robber = (px, py)
+                app.robberCoords = (px, py)
                 continue
 
             number = random.choice(self.numbers)
@@ -81,9 +81,13 @@ class Board:
         # draw the surrounding water
         drawRect(0, 0, app.width, app.height, fill='lightBlue')
 
+        # draw board
         self.drawTiles(app)
         self.drawGrid(app)
         self.drawBuildings(app)
+
+        # draw robber
+        drawImage(app.robber, *getHexCoords(app, *app.robberCoords), align='center')
     
     def drawTiles(self, app):
         for px, py in self.centers:

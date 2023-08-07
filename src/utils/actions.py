@@ -33,14 +33,16 @@ def buildSettlement(app, mouseX, mouseY):
                 
                 app.board.buildings[(px, py)] = (1, app.curPlayer.color)
                 updateMessages(app, f'Player {app.curPlayerID+1} built a settlement')
-                return
+                app.curPlayer.vp += 1
+                return True
             else:
                 # not enough resources
                 updateMessages(app, 'Not enough resources')
-                return
+                return True
     
     # not a valid placement
     updateMessages(app, 'Not a valid placement')
+    return False
 
 def buildCity(app, mouseX, mouseY):
     # go through coords and check if enough resources to place a city
@@ -55,14 +57,16 @@ def buildCity(app, mouseX, mouseY):
 
                 app.board.buildings[(px, py)] = (2, app.curPlayer.color)
                 updateMessages(app, f'Player {app.curPlayerID+1} built a city')
-                return
+                app.curPlayer.vp += 1
+                return True
             else:
                 # not enough resources
                 updateMessages(app, 'Not enough resources')
-                return
+                return True
     
     # not a valid placement
     updateMessages(app, 'Not a valid placement')
+    return False
 
 def buildRoad(app, mouseX, mouseY):
     # go through coords and check if enough resources to place a city
@@ -77,12 +81,23 @@ def buildRoad(app, mouseX, mouseY):
 
                 app.board.buildings[(px, py)] = ('r', app.curPlayer.color)
                 updateMessages(app, f'Player {app.curPlayerID+1} built a road')
-                return
+                return True
             else:
                 # not enough resources
                 updateMessages(app, 'Not enough resources')
-                return
+                return True
     
     # not a valid placement
     updateMessages(app, 'Not a valid placement')
-    
+    return False
+
+def moveRobber(app, mouseX, mouseY):
+    for (px, py) in app.board.centers:
+        if (distance(mouseX, mouseY, *getHexCoords(app, px, py)) <= 18 
+            and app.robberCoords != (px, py)):
+            app.robberCoords = (px, py)
+            return True
+
+    # not a valid placement
+    updateMessages(app, 'Not a valid placement')
+    return False

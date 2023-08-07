@@ -47,6 +47,10 @@ def getImages(app):
     for resource in app.resources:
         resImage = Image.open(getImagePath(f'resources--{resource}.png'))
         app.resImages[resource] = processImage(resImage, (50, 80))
+    
+    # robber
+    robber = Image.open(getImagePath('robber.png'))
+    app.robber = processImage(robber, (40, 40))
 
 
 def processImage(image, size):

@@ -5,11 +5,16 @@ class Player:
         self.number = index + 1
         self.color = app.colors[index]
         self.cards = dict()
+        self.vp = 0
         for resource in app.resources:
             self.cards[resource] = 4
     
     def getResources(self, app):
         for (px, py) in app.board.centers:
+            # robber is blocking this hex
+            if (px, py) == app.robberCoords: continue
+
+            # distribute resources to surrounding settlements/cities
             tile, number = app.board.centers[(px, py)]
             if number == app.roll:
                 for dx in range(-1, 2):
@@ -21,6 +26,3 @@ class Player:
                                                                floor(py) + dy)]
                         if color == self.color:
                             self.cards[app.tileToRes[tile]] += building
-
-    def makeBuilding(self, app, px, py, building):
-        app.board.buildings[(px, py)] = (building, self.color)
