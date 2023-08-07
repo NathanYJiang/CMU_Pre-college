@@ -60,18 +60,18 @@ def restart(app):
     # initial dice
     app.dice1 = random.randint(1, 6)
     app.dice2 = random.randint(1, 6)
-    
+
     # start game
-    startingPhase(app)
+    nextTurn(app)
 
 
-def startingPhase(app):
-    updateMessages(app, f"Player {app.curPlayerID+1} placing first settlement")
-    app.gameState = 'build settlement'
+# def startingPhase(app):
+#     updateMessages(app, f"Player {app.curPlayerID+1} placing first settlement")
+#     app.gameState = 'free settlement'
 
-    updateMessages(app, f"Player {app.curPlayerID+1} placing first road")
-    app.gameState = 'build road'
-    nextPlayer(app)
+#     updateMessages(app, f"Player {app.curPlayerID+1} placing first road")
+#     app.gameState = 'free road'
+#     nextPlayer(app)
 
 
 def nextPlayer(app):
@@ -165,20 +165,20 @@ def onMousePress(app, mouseX, mouseY):
     # player has acted, so check what they want to do
     else:
         if app.gameState == 'build road':
-            if buildRoad(app, mouseX, mouseY):
-                app.gameState = 'player turn'
+            buildRoad(app, mouseX, mouseY)
         elif app.gameState == 'build settlement':
-            if buildSettlement(app, mouseX, mouseY):
-                app.gameState = 'player turn'
+            buildSettlement(app, mouseX, mouseY)
         elif app.gameState == 'build city':
-            if buildCity(app, mouseX, mouseY):
-                app.gameState = 'player turn'
+            buildCity(app, mouseX, mouseY)
         elif app.gameState == 'move robber':
-            if moveRobber(app, mouseX, mouseY):
-                app.gameState = 'player turn'
+            moveRobber(app, mouseX, mouseY)
         
         if app.curPlayer.vp >= 10:
-            updateMessages(app, f'Player {app.curPlayerID+1} wins!')
+            updateMessages(app, f'Player {app.curPlayerID+1} wins with ' + 
+                           f'{app.curPlayer.vp} points!')
+            nextPlayer(app)
+            updateMessages(app, f'Player {app.curPlayerID+1} got second place' + 
+                           f' with {app.curPlayer.vp} points')
             updateMessages(app, 'Press n for a new game')
             app.gameOver = True
 

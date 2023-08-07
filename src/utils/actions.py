@@ -18,7 +18,7 @@ def setStatus(button, app):
         app.gameState = 'end turn'
 
 
-def buildSettlement(app, mouseX, mouseY, free=True):
+def buildSettlement(app, mouseX, mouseY, free=False):
     # go through coords and check if enough resources to place a settlement
     for (px, py) in app.board.coords:
         if (distance(mouseX, mouseY, *getHexCoords(app, px, py)) <= 12
@@ -39,11 +39,11 @@ def buildSettlement(app, mouseX, mouseY, free=True):
                 # not enough resources
                 updateMessages(app, 'Not enough resources')
             
-            return True
+            app.gameState = 'player turn'
+            return
     
     # not a valid placement
     updateMessages(app, 'Not a valid placement')
-    return False
 
 def buildCity(app, mouseX, mouseY):
     # go through coords and check if enough resources to place a city
@@ -63,13 +63,13 @@ def buildCity(app, mouseX, mouseY):
                 # not enough resources
                 updateMessages(app, 'Not enough resources')
             
-            return True
+            app.gameState = 'player turn'
+            return
     
     # not a valid placement
     updateMessages(app, 'Not a valid placement')
-    return False
 
-def buildRoad(app, mouseX, mouseY):
+def buildRoad(app, mouseX, mouseY, free=False):
     # go through coords and check if enough resources to place a city
     for (px, py) in app.board.midpoints:
         if (distance(mouseX, mouseY, *getHexCoords(app, px, py)) <= 12
@@ -86,19 +86,19 @@ def buildRoad(app, mouseX, mouseY):
                 # not enough resources
                 updateMessages(app, 'Not enough resources')
             
-            return True
+            app.gameState = 'player turn'
+            return
     
     # not a valid placement
     updateMessages(app, 'Not a valid placement')
-    return False
 
 def moveRobber(app, mouseX, mouseY):
     for (px, py) in app.board.centers:
         if (distance(mouseX, mouseY, *getHexCoords(app, px, py)) <= 18 
             and app.robberCoords != (px, py)):
             app.robberCoords = (px, py)
-            return True
+            app.gameState = 'player turn'
+            return
 
     # not a valid placement
     updateMessages(app, 'Not a valid placement')
-    return False

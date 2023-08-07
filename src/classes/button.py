@@ -18,13 +18,13 @@ class Button:
         x, y = self.x + self.width/2, self.y + self.height/2
         drawLabel(self.label, x, y-18)
         if self.label == 'road':
-            drawLine(x-20, y+10, x+20, y+10, fill=app.curPlayer.color, lineWidth=10)
+            drawLine(x-25, y+10, x+25, y+10, fill=app.curPlayer.color, lineWidth=10)
         elif self.label == 'settlement':
             app.board.drawSettlement(x, y+12, app.curPlayer.color)
         elif self.label == 'city':
             app.board.drawCity(x, y+14, app.curPlayer.color)
         elif self.label == 'end':
-            drawImage(app.endturn, x+3, y+9, align='center')
+            drawImage(app.endturn, x+2, y+9, align='center')
 
     def onClick(self, mouseX, mouseY):
         # not clicked, so return
