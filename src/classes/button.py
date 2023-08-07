@@ -1,5 +1,7 @@
 from cmu_graphics import *
 from utils.actions import setStatus
+from classes.board import Board
+
 
 class Button:
     def __init__(self, x, y, label):
@@ -12,7 +14,17 @@ class Button:
     def draw(self, app):
         drawRect(self.x, self.y, self.width, self.height, 
                  fill='white', border='black')
-        drawLabel(self.label, self.x+self.width/2, self.y+self.height/2)
+        
+        x, y = self.x + self.width/2, self.y + self.height/2
+        drawLabel(self.label, x, y-18)
+        if self.label == 'road':
+            drawLine(x-20, y+10, x+20, y+10, fill=app.curPlayer.color, lineWidth=10)
+        elif self.label == 'settlement':
+            app.board.drawSettlement(x, y+12, app.curPlayer.color)
+        elif self.label == 'city':
+            app.board.drawCity(x, y+14, app.curPlayer.color)
+        elif self.label == 'end':
+            drawImage(app.endturn, x+3, y+9, align='center')
 
     def onClick(self, mouseX, mouseY):
         # not clicked, so return

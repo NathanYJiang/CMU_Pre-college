@@ -8,6 +8,7 @@ import random
 from utils.messages import updateMessages
 from utils.actions import buildRoad, buildSettlement, buildCity, moveRobber
 
+
 def onAppStart(app):
     app.s = 70
     app.startX = 0
@@ -56,14 +57,32 @@ def restart(app):
     # messages
     app.messages = ['Welcome to Settlers of Ketan']
 
-    nextTurn(app)
+    # initial dice
+    app.dice1 = random.randint(1, 6)
+    app.dice2 = random.randint(1, 6)
+    
+    # start game
+    startingPhase(app)
+
+
+def startingPhase(app):
+    updateMessages(app, f"Player {app.curPlayerID+1} placing first settlement")
+    app.gameState = 'build settlement'
+
+    updateMessages(app, f"Player {app.curPlayerID+1} placing first road")
+    app.gameState = 'build road'
+    nextPlayer(app)
+
+
+def nextPlayer(app):
+    app.curPlayerID += 1
+    app.curPlayerID %= app.numPlayers
+    app.curPlayer = app.players[app.curPlayerID]
 
 
 def nextTurn(app):
     # new player turn
-    app.curPlayerID += 1
-    app.curPlayerID %= app.numPlayers
-    app.curPlayer = app.players[app.curPlayerID]
+    nextPlayer(app)
     updateMessages(app, f"Player {app.curPlayerID+1}'s turn")
 
     # roll the dice
@@ -128,7 +147,11 @@ def redrawAll(app):
 
 
 def onMousePress(app, mouseX, mouseY):
+    # no actions allowed if the game is over
     if app.gameOver: return
+
+    if app.gameState == 'new game':
+        pass
 
     # on player turn, check actions of all buttons
     if app.gameState == 'player turn':
@@ -164,7 +187,7 @@ def onKeyPress(app, key):
     if app.gameOver:
         if key == 'n':
             restart(app)
-    elif app.gameState != 'move robber' and key == 'escape':
+    elif app.gameState not in ['move robber', 'new game'] and key == 'escape':
         app.gameState = 'player turn'
 
 

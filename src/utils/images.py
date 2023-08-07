@@ -6,9 +6,10 @@ from PIL import Image, ImageFilter, ImageEnhance
 
 # credit for number tokens goes to: https://catanworldexplorers.fandom.com/wiki/Settlement
 # credit for dice images goes to: https://game-icons.net/1x1/delapouite/dice-six-faces-one.html
+# credit for end turn image goes to: https://www.pngmart.com/image/tag/fast-forward
 # credit for other images goes to: https://github.com/BryantCabrera/Settlers-of-Catan/tree/master/resources/imgs
-# PIL sharpen learned from: https://pythonexamples.org/python-pillow-image-sharpen/
 # used https://tinypng.com/ to minimize images
+# PIL sharpen learned from: https://pythonexamples.org/python-pillow-image-sharpen/
 
 # from Ray's cmu_graphics demo
 def getImagePath(imageName):
@@ -52,8 +53,13 @@ def getImages(app):
     robber = Image.open(getImagePath('robber.png'))
     app.robber = processImage(robber, (40, 40))
 
+    # end turn
+    endturn = Image.open(getImagePath('endturn.png'))
+    app.endturn = processImage(endturn, (30, 30))
+
 
 def processImage(image, size):
+    # converts, resizes, and then sharpens an image
     image = image.convert('RGBA')
     image.thumbnail(size)
     image = image.filter(ImageFilter.SHARPEN)

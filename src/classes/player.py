@@ -1,5 +1,6 @@
 from math import floor
 
+
 class Player:
     def __init__(self, app, index):
         self.number = index + 1
