@@ -6,6 +6,7 @@ from classes.player import Player
 from classes.button import Button
 import random
 from utils.messages import updateMessages
+from utils.actions import buildRoad, buildSettlement, buildCity
 
 def onAppStart(app):
     app.s = 70
@@ -39,7 +40,7 @@ def restart(app):
     app.board = Board()
     getImages(app)
 
-    #TEST
+    # TEST
     app.board.buildings[(8, 1)] = (1, app.players[0].color)
     app.board.buildings[(8, 2)] = (2, app.players[1].color)
     
@@ -51,19 +52,19 @@ def restart(app):
         app.buttons.append(Button(sx + 80*i, sy, label))
     
     app.curPlayerID = random.randint(0, app.numPlayers-1)
-    onTurn(app)
 
     # messages
     app.messages = ['Welcome to Settlers of Ketan']
-    for i in range(100):
-        updateMessages(app, 'hello lol this is a test brrrrrrrrrrrrdrrrrrrrrrr')
-        
 
-def onTurn(app):
+    nextTurn(app)
+
+
+def nextTurn(app):
     # new player turn
     app.curPlayerID += 1
     app.curPlayerID %= app.numPlayers
     app.curPlayer = app.players[app.curPlayerID]
+    updateMessages(app, f"Player {app.curPlayerID+1}'s turn")
 
     # roll the dice
     app.dice1 = random.randint(1, 6)
@@ -85,10 +86,6 @@ def redrawAll(app):
     drawImage(app.dice[app.dice1], 670, 610)
     drawImage(app.dice[app.dice2], 755, 610)
 
-    # random settlement/city test
-    app.board.drawSettlement(*getHexCoords(app, 8, 1), fill=app.colors[0])
-    app.board.drawCity(*getHexCoords(app, 8, 2), fill=app.colors[1])
-
     # random playericon test
     drawImage(app.icons[app.curPlayerID], 50, 50, align='center')
 
@@ -106,17 +103,17 @@ def redrawAll(app):
     
     # draw messages
     for i in range(len(app.messages)):
-        drawLabel(app.messages[i], 1080, 50 + 25*i, size=16)
+        drawLabel(app.messages[i], 1100, 50 + 25*i, size=16)
     
     # draw circles for placement
     if app.gameState[:5] == 'build':
         if app.gameState[6:] == 'road':
             for (px, py) in app.board.midpoints:
-                drawCircle(*getHexCoords(app, px, py), 10, fill='yellow', 
+                drawCircle(*getHexCoords(app, px, py), 12, fill='yellow', 
                            opacity=60)
         else:
-            for (px, py) in app.board.centers:
-                drawCircle(*getHexCoords(app, px, py), 10, fill='yellow', 
+            for (px, py) in app.board.coords:
+                drawCircle(*getHexCoords(app, px, py), 12, fill='yellow', 
                            opacity=60)
 
 
@@ -124,17 +121,20 @@ def onMousePress(app, mouseX, mouseY):
     # on player turn, check actions of all buttons
     if app.gameState == 'player turn':
         for button in app.buttons:
-            button.onClick(mouseX, mouseY)
+            if button.onClick(mouseX, mouseY): 
+                break
+
+        if app.gameState == 'end turn':
+            nextTurn(app)
     
-    # player has acted, so check what they want
+    # player has acted, so check what they want to do
     else:
-        if app.gameState == 'build settlement':
-            for (px, py) in app.board.centers:
-                if (distance(mouseX, mouseY, *getHexCoords(app, px, py)) <= 10 
-                    and app.board.buildings[()]:
-
-
-    #onTurn(app)
+        if app.gameState == 'build road':
+            buildRoad(app, mouseX, mouseY)
+        elif app.gameState == 'build settlement':
+            buildSettlement(app, mouseX, mouseY)
+        elif app.gameState == 'build city':
+            buildCity(app, mouseX, mouseY)
 
 
 runApp(width=1350, height=850)

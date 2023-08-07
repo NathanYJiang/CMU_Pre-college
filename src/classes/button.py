@@ -1,5 +1,5 @@
 from cmu_graphics import *
-from utils.actions import action
+from utils.actions import setStatus
 
 class Button:
     def __init__(self, x, y, label):
@@ -17,9 +17,10 @@ class Button:
     def onClick(self, mouseX, mouseY):
         # not clicked, so return
         if not ((self.x <= mouseX <= self.x + self.width) 
-            and (self.y <= mouseY <= self.y + self.height)): return
+                and (self.y <= mouseY <= self.y + self.height)): return False
         
-        action(self, app)
+        setStatus(self, app)
+        return True
         
 
         

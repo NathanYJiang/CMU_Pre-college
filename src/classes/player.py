@@ -6,7 +6,7 @@ class Player:
         self.color = app.colors[index]
         self.cards = dict()
         for resource in app.resources:
-            self.cards[resource] = 0
+            self.cards[resource] = 10
     
     def getResources(self, app):
         for (px, py) in app.board.centers:
