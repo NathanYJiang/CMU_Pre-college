@@ -126,7 +126,7 @@ def onMousePress(app, mouseX, mouseY):
 
         if app.gameState == 'end turn':
             nextTurn(app)
-    
+            
     # player has acted, so check what they want to do
     else:
         if app.gameState == 'build road':
@@ -135,6 +135,8 @@ def onMousePress(app, mouseX, mouseY):
             buildSettlement(app, mouseX, mouseY)
         elif app.gameState == 'build city':
             buildCity(app, mouseX, mouseY)
+
+        app.gameState = 'player turn'
 
 
 runApp(width=1350, height=850)

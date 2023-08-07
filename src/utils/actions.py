@@ -27,44 +27,62 @@ def buildSettlement(app, mouseX, mouseY):
 
             # learned the all function from https://docs.python.org/3/library/functions.html#all
             if all(app.curPlayer.cards[r] >= 1 for r in resourcesNeeded):
+                # enough resources
                 for r in resourcesNeeded:
                     app.curPlayer.cards[r] -= 1
                 
                 app.board.buildings[(px, py)] = (1, app.curPlayer.color)
-                break
+                updateMessages(app, f'Player {app.curPlayerID+1} built a settlement')
+                return
             else:
+                # not enough resources
                 updateMessages(app, 'Not enough resources')
+                return
     
-    # return to player turn
-    app.gameState = 'player turn'
+    # not a valid placement
+    updateMessages(app, 'Not a valid placement')
 
 def buildCity(app, mouseX, mouseY):
     # go through coords and check if enough resources to place a city
     for (px, py) in app.board.coords:
         if (distance(mouseX, mouseY, *getHexCoords(app, px, py)) <= 12
             and app.board.buildings[(px, py)] == (1, app.curPlayer.color)):
-            if (app.curPlayer.resources['grain'] >= 2 
-                and app.curPlayer.resources['ore'] >= 3):
-                app.curPlayer.resources['grain'] -= 2 
-                app.curPlayer.resources['ore'] -= 3
+            if (app.curPlayer.cards['grain'] >= 2 
+                and app.curPlayer.cards['ore'] >= 3):
+                # enough resources
+                app.curPlayer.cards['grain'] -= 2 
+                app.curPlayer.cards['ore'] -= 3
+
+                app.board.buildings[(px, py)] = (2, app.curPlayer.color)
+                updateMessages(app, f'Player {app.curPlayerID+1} built a city')
+                return
+            else:
+                # not enough resources
+                updateMessages(app, 'Not enough resources')
+                return
     
-    # return to player turn
-    app.gameState = 'player turn'
+    # not a valid placement
+    updateMessages(app, 'Not a valid placement')
 
 def buildRoad(app, mouseX, mouseY):
     # go through coords and check if enough resources to place a city
     for (px, py) in app.board.midpoints:
         if (distance(mouseX, mouseY, *getHexCoords(app, px, py)) <= 12
             and app.board.buildings[(px, py)] == None):
-            if (app.curPlayer.resources['lumber'] >= 1
-                and app.curPlayer.resources['brick'] >= 1):
-                app.curPlayer.resources['lumber'] -= 1
-                app.curPlayer.resources['brick'] -= 1
+            if (app.curPlayer.cards['lumber'] >= 1
+                and app.curPlayer.cards['brick'] >= 1):
+                # enough resources
+                app.curPlayer.cards['lumber'] -= 1
+                app.curPlayer.cards['brick'] -= 1
+
+                app.board.buildings[(px, py)] = ('r', app.curPlayer.color)
+                updateMessages(app, f'Player {app.curPlayerID+1} built a road')
+                return
+            else:
+                # not enough resources
+                updateMessages(app, 'Not enough resources')
+                return
     
-    # return to player turn
-    app.gameState = 'player turn'
-        
-
-
+    # not a valid placement
+    updateMessages(app, 'Not a valid placement')
     
-

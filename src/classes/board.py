@@ -96,7 +96,12 @@ class Board:
             drawImage(app.tokens[number], x, y, align='center')
     
     def drawBuildings(self, app):
-        for (px, py) in self.buildings:
+        for (px, py) in self.midpoints:
+            if self.buildings[(px, py)] != None:
+                color = self.buildings[(px, py)][1]
+                self.drawRoad(app, px, py, color)
+
+        for (px, py) in self.coords:
             if self.buildings[(px, py)] != None:
                 building, color = self.buildings[(px, py)]
                 if building == 1:
@@ -104,9 +109,7 @@ class Board:
                                              fill=color)
                 elif building == 2:
                     self.drawCity(*getHexCoords(app, px, py), fill=color)
-                else:
-                    self.drawRoad(app, px, py, color)
-
+        
     def drawGrid(self, app):
         # draw the grid
         for (px, py) in self.coords:
