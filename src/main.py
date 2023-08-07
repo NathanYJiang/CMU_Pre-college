@@ -43,8 +43,11 @@ def restart(app):
     # buttons
     app.buttons = []
     sx, sy = 420, 735
-    for i in range(6):
-        label = ['trade', 'dv', 'road', 'settlement', 'city', 'end'][i]
+    
+    # missing trade and dv
+    labels = ['road', 'settlement', 'city', 'end']
+    for i in range(len(labels)): 
+        label = labels[i]
         app.buttons.append(Button(sx + 80*i, sy, label))
     
     app.curPlayerID = random.randint(0, app.numPlayers-1)

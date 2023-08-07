@@ -21,8 +21,4 @@ class Button:
         
         setStatus(self, app)
         return True
-        
-
-        
-
     
