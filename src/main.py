@@ -112,7 +112,7 @@ def redrawAll(app):
     drawImage(app.dice[app.dice2], 755, 610)
 
     # draw player icon
-    drawImage(app.icons[app.curPlayerID], 50, 50, align='center')
+    drawImage(app.icons[app.curPlayerID], 60, 60, align='center')
 
     # draw player resources
     drawRect(30, 670, 360, 150, fill=app.curPlayer.color, border='black')

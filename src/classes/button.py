@@ -1,6 +1,5 @@
 from cmu_graphics import *
 from utils.actions import setStatus
-from classes.board import Board
 
 
 class Button:

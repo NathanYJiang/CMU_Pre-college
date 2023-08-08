@@ -1,7 +1,7 @@
 import os
 import pathlib
 from cmu_graphics import CMUImage
-from PIL import Image, ImageFilter, ImageEnhance
+from PIL import Image, ImageFilter
 
 
 # credit for number tokens goes to: https://catanworldexplorers.fandom.com/wiki/Settlement
