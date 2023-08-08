@@ -223,11 +223,10 @@ def onMousePress(app, mouseX, mouseY):
         elif app.gameState == 'move robber':
             moveRobber(app, mouseX, mouseY)
         
-        if app.curPlayer.vp >= 10:
+        if app.curPlayer.vp >= 2:
             updateMessages(app, f'Player {app.curPlayerID+1} wins with ' + 
                            f'{app.curPlayer.vp} points!')
-            nextPlayer(app)
-            updateMessages(app, f'Player {app.curPlayerID+1} got second place' + 
+            updateMessages(app, f'Player {((app.curPlayerID+1)%app.numPlayers)+1} got second place' + 
                            f' with {app.curPlayer.vp} points')
             updateMessages(app, 'Press n for a new game')
             app.gameOver = True
