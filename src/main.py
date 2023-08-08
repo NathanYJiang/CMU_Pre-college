@@ -144,7 +144,7 @@ def onMousePress(app, mouseX, mouseY):
 
     # starting action
     if app.gameState == 'start game':
-        # initial settlements
+        # initial settlements (NEED FIXING BECAUSE RUNS ON SAME MX, MY)
         buildSettlement(app, mouseX, mouseY, True)
         buildRoad(app, mouseX, mouseY, True)
         nextPlayer(app)
