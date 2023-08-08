@@ -43,7 +43,7 @@ def restart(app):
     
     # buttons
     app.buttons = []
-    sx, sy = 420, 735
+    sx, sy = 450, 735
 
     # missing trade and dv
     labels = ['road', 'settlement', 'city', 'end']
@@ -223,15 +223,13 @@ def onMousePress(app, mouseX, mouseY):
         elif app.gameState == 'move robber':
             moveRobber(app, mouseX, mouseY)
         
-        if app.curPlayer.vp >= 2:
+        if app.curPlayer.vp >= 10:
             updateMessages(app, f'Player {app.curPlayerID+1} wins with ' + 
                            f'{app.curPlayer.vp} points!')
             updateMessages(app, f'Player {((app.curPlayerID+1)%app.numPlayers)+1} got second place' + 
                            f' with {app.curPlayer.vp} points')
             updateMessages(app, 'Press n for a new game')
             app.gameOver = True
-    
-    print(app.gameState)
 
 
 def onKeyPress(app, key):
