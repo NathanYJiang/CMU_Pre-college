@@ -28,8 +28,7 @@ def onAppStart(app):
 
 
 def restart(app):
-    # new game status
-    app.gameState = 'new game'
+    # new game
     app.gameOver = False
 
     # number of players (fixed at 2 rn)
@@ -51,8 +50,6 @@ def restart(app):
     for i in range(len(labels)): 
         label = labels[i]
         app.buttons.append(Button(sx + 80*i, sy, label))
-    
-    app.curPlayerID = random.randint(0, app.numPlayers-1)
 
     # messages
     app.messages = ['Welcome to Settlers of Ketan']
@@ -61,17 +58,12 @@ def restart(app):
     app.dice1 = random.randint(1, 6)
     app.dice2 = random.randint(1, 6)
 
+    # pick random player
+    app.curPlayerID = random.randint(0, app.numPlayers-1)
+    nextPlayer(app)
+
     # start game
-    nextTurn(app)
-
-
-# def startingPhase(app):
-#     updateMessages(app, f"Player {app.curPlayerID+1} placing first settlement")
-#     app.gameState = 'free settlement'
-
-#     updateMessages(app, f"Player {app.curPlayerID+1} placing first road")
-#     app.gameState = 'free road'
-#     nextPlayer(app)
+    app.gameState = 'start game'
 
 
 def nextPlayer(app):
@@ -150,8 +142,19 @@ def onMousePress(app, mouseX, mouseY):
     # no actions allowed if the game is over
     if app.gameOver: return
 
-    if app.gameState == 'new game':
-        pass
+    # starting action
+    if app.gameState == 'start game':
+        # initial settlements
+        buildSettlement(app, mouseX, mouseY, True)
+        buildRoad(app, mouseX, mouseY, True)
+        nextPlayer(app)
+        buildSettlement(app, mouseX, mouseY, True)
+        buildRoad(app, mouseX, mouseY, True)
+        buildSettlement(app, mouseX, mouseY, True)
+        buildRoad(app, mouseX, mouseY, True)
+        nextPlayer(app)
+        buildSettlement(app, mouseX, mouseY, True)
+        buildRoad(app, mouseX, mouseY, True)
 
     # on player turn, check actions of all buttons
     if app.gameState == 'player turn':
