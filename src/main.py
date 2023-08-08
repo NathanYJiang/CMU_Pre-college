@@ -63,7 +63,7 @@ def restart(app):
     nextPlayer(app)
 
     # start game
-    app.gameState = 'start game 1'
+    app.gameState = 'start game'
     app.stage = 0
 
 
@@ -124,13 +124,13 @@ def redrawAll(app):
         drawLabel(app.messages[i], 1100, 50 + 25*i, size=16)
     
     # draw circles for placement
-    if app.gameState[:10] == 'start game':
+    if app.gameState == 'start game':
         if app.stage % 2 == 1:
             drawRoadPlaces(app)
         else:
             drawBuildingPlaces(app)
-    elif app.gameState[:5] == 'build':
-        if app.gameState[6:] == 'road':
+    elif app.gameState == 'build':
+        if app.gameState == 'road':
             drawRoadPlaces(app)
         else:
             drawBuildingPlaces(app)
@@ -158,11 +158,12 @@ def drawRobberPlaces(app):
 
 def onMousePress(app, mouseX, mouseY):
     # no actions allowed if the game is over
-    if app.gameOver: return
+    if app.gameOver: 
+        return
 
     # starting action
-    if app.gameState[:10] == 'start game':
-        app.stage = int(app.gameState[11:])
+    elif app.gameState == 'start game':
+        app.stage += 1
         if app.stage == 1:
             app.gameState = 'build settlement'
             buildSettlement(app, mouseX, mouseY, True)
@@ -179,8 +180,6 @@ def onMousePress(app, mouseX, mouseY):
         elif app.stage == 5:
             app.gameState = 'build settlement'
             buildSettlement(app, mouseX, mouseY, True)
-            # tile = app.board.centers[(px, py)][0]
-            # app.curPlayer.cards[app.tileToRes[tile]] += 1
         elif app.stage == 6:
             app.gameState = 'build road'
             buildRoad(app, mouseX, mouseY, True)
@@ -191,15 +190,17 @@ def onMousePress(app, mouseX, mouseY):
         elif app.stage == 8:
             app.gameState = 'build road'
             buildRoad(app, mouseX, mouseY, True)
-        else:
+            nextPlayer(app)
+            nextTurn(app)_
             app.gameState = 'player turn'
-            app.stage = -1
+
+            # exit start game state
             return
         
-        app.gameState = 'start game ' + str(app.stage + 1)
-
+        app.gameState = 'start game'
+        
     # on player turn, check actions of all buttons
-    if app.gameState == 'player turn':
+    elif app.gameState == 'player turn':
         for button in app.buttons:
             if button.onClick(mouseX, mouseY): 
                 break
@@ -232,7 +233,9 @@ def onKeyPress(app, key):
     if app.gameOver:
         if key == 'n':
             restart(app)
-    elif app.gameState not in ['move robber', 'new game'] and key == 'escape':
+    elif (app.gameState != 'move robber' 
+          and app.gameState != 'start game'
+          and key == 'escape'):
         app.gameState = 'player turn'
 
 
