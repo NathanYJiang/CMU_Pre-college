@@ -129,8 +129,8 @@ def redrawAll(app):
             drawBuildingPlaces(app)
         else:
             drawRoadPlaces(app)
-    elif app.gameState == 'build':
-        if app.gameState == 'road':
+    elif app.gameState[:5] == 'build':
+        if app.gameState[6:] == 'road':
             drawRoadPlaces(app)
         else:
             drawBuildingPlaces(app)
