@@ -63,7 +63,8 @@ def restart(app):
     nextPlayer(app)
 
     # start game
-    app.gameState = 'start game'
+    app.gameState = 'start game 1'
+    app.stage = 0
 
 
 def nextPlayer(app):
@@ -123,19 +124,36 @@ def redrawAll(app):
         drawLabel(app.messages[i], 1100, 50 + 25*i, size=16)
     
     # draw circles for placement
-    if app.gameState[:5] == 'build':
-        if app.gameState[6:] == 'road':
-            for (px, py) in app.board.midpoints:
-                drawCircle(*getHexCoords(app, px, py), 12, fill='yellow', 
-                           opacity=60)
+    if app.gameState[:10] == 'start game':
+        if app.stage % 2 == 1:
+            drawRoadPlaces(app)
         else:
-            for (px, py) in app.board.coords:
-                drawCircle(*getHexCoords(app, px, py), 12, fill='yellow', 
-                           opacity=60)
+            drawBuildingPlaces(app)
+    elif app.gameState[:5] == 'build':
+        if app.gameState[6:] == 'road':
+            drawRoadPlaces(app)
+        else:
+            drawBuildingPlaces(app)
     elif app.gameState == 'move robber':
-        for (px, py) in app.board.centers:
-            drawCircle(*getHexCoords(app, px, py), 18, fill='yellow', 
-                       opacity=60)
+        drawRobberPlaces(app)
+
+
+def drawRoadPlaces(app):
+    for (px, py) in app.board.midpoints:
+        drawCircle(*getHexCoords(app, px, py), 12, fill='yellow', 
+                   opacity=60)
+
+
+def drawBuildingPlaces(app):
+    for (px, py) in app.board.coords:
+        drawCircle(*getHexCoords(app, px, py), 12, fill='yellow', 
+                   opacity=60)
+
+
+def drawRobberPlaces(app):
+    for (px, py) in app.board.centers:
+        drawCircle(*getHexCoords(app, px, py), 18, fill='yellow', 
+                   opacity=60)
 
 
 def onMousePress(app, mouseX, mouseY):
@@ -143,18 +161,42 @@ def onMousePress(app, mouseX, mouseY):
     if app.gameOver: return
 
     # starting action
-    if app.gameState == 'start game':
-        # initial settlements (NEED FIXING BECAUSE RUNS ON SAME MX, MY)
-        buildSettlement(app, mouseX, mouseY, True)
-        buildRoad(app, mouseX, mouseY, True)
-        nextPlayer(app)
-        buildSettlement(app, mouseX, mouseY, True)
-        buildRoad(app, mouseX, mouseY, True)
-        buildSettlement(app, mouseX, mouseY, True)
-        buildRoad(app, mouseX, mouseY, True)
-        nextPlayer(app)
-        buildSettlement(app, mouseX, mouseY, True)
-        buildRoad(app, mouseX, mouseY, True)
+    if app.gameState[:10] == 'start game':
+        app.stage = int(app.gameState[11:])
+        if app.stage == 1:
+            app.gameState = 'build settlement'
+            buildSettlement(app, mouseX, mouseY, True)
+        elif app.stage == 2:
+            app.gameState = 'build road'
+            buildRoad(app, mouseX, mouseY, True)
+            nextPlayer(app)
+        elif app.stage == 3:
+            app.gameState = 'build settlement'
+            buildSettlement(app, mouseX, mouseY, True)
+        elif app.stage == 4:
+            app.gameState = 'build road'
+            buildRoad(app, mouseX, mouseY, True)
+        elif app.stage == 5:
+            app.gameState = 'build settlement'
+            buildSettlement(app, mouseX, mouseY, True)
+            # tile = app.board.centers[(px, py)][0]
+            # app.curPlayer.cards[app.tileToRes[tile]] += 1
+        elif app.stage == 6:
+            app.gameState = 'build road'
+            buildRoad(app, mouseX, mouseY, True)
+            nextPlayer(app)
+        elif app.stage == 7:
+            app.gameState = 'build settlement'
+            buildSettlement(app, mouseX, mouseY, True)
+        elif app.stage == 8:
+            app.gameState = 'build road'
+            buildRoad(app, mouseX, mouseY, True)
+        else:
+            app.gameState = 'player turn'
+            app.stage = -1
+            return
+        
+        app.gameState = 'start game ' + str(app.stage + 1)
 
     # on player turn, check actions of all buttons
     if app.gameState == 'player turn':

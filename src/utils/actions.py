@@ -45,6 +45,11 @@ def buildSettlement(app, mouseX, mouseY, free=False):
     # not a valid placement
     updateMessages(app, 'Not a valid placement')
 
+    # free means just started, so repeat the placement
+    if free:
+        app.stage -= 1
+
+
 def buildCity(app, mouseX, mouseY):
     # go through coords and check if enough resources to place a city
     for (px, py) in app.board.coords:
@@ -69,16 +74,18 @@ def buildCity(app, mouseX, mouseY):
     # not a valid placement
     updateMessages(app, 'Not a valid placement')
 
+
 def buildRoad(app, mouseX, mouseY, free=False):
     # go through coords and check if enough resources to place a city
     for (px, py) in app.board.midpoints:
         if (distance(mouseX, mouseY, *getHexCoords(app, px, py)) <= 12
             and app.board.buildings[(px, py)] == None):
-            if (app.curPlayer.cards['lumber'] >= 1
-                and app.curPlayer.cards['brick'] >= 1):
+            if (free or (app.curPlayer.cards['lumber'] >= 1
+                and app.curPlayer.cards['brick'] >= 1)):
                 # enough resources
-                app.curPlayer.cards['lumber'] -= 1
-                app.curPlayer.cards['brick'] -= 1
+                if not free:
+                    app.curPlayer.cards['lumber'] -= 1
+                    app.curPlayer.cards['brick'] -= 1
 
                 app.board.buildings[(px, py)] = ('r', app.curPlayer.color)
                 updateMessages(app, f'Player {app.curPlayerID+1} built a road')
@@ -91,6 +98,11 @@ def buildRoad(app, mouseX, mouseY, free=False):
     
     # not a valid placement
     updateMessages(app, 'Not a valid placement')
+
+    # free means just started, so repeat the placement
+    if free:
+        app.stage -= 1
+
 
 def moveRobber(app, mouseX, mouseY):
     for (px, py) in app.board.centers:
