@@ -8,7 +8,7 @@ class Player:
         self.cards = dict()
         self.vp = 0
         for resource in app.resources:
-            self.cards[resource] = 4
+            self.cards[resource] = 0
     
     def getResources(self, app):
         for (px, py) in app.board.centers:

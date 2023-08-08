@@ -35,6 +35,10 @@ def buildSettlement(app, mouseX, mouseY, free=False):
                 app.board.buildings[(px, py)] = (1, app.curPlayer.color)
                 updateMessages(app, f'Player {app.curPlayerID+1} built a settlement')
                 app.curPlayer.vp += 1
+
+                # next stage in starting phase
+                if free:
+                    app.stage += 1
             else:
                 # not enough resources
                 updateMessages(app, 'Not enough resources')
@@ -44,10 +48,6 @@ def buildSettlement(app, mouseX, mouseY, free=False):
     
     # not a valid placement
     updateMessages(app, 'Not a valid placement')
-
-    # free means just started, so repeat the placement
-    if free:
-        app.stage -= 1
 
 
 def buildCity(app, mouseX, mouseY):
@@ -89,6 +89,10 @@ def buildRoad(app, mouseX, mouseY, free=False):
 
                 app.board.buildings[(px, py)] = ('r', app.curPlayer.color)
                 updateMessages(app, f'Player {app.curPlayerID+1} built a road')
+
+                # next stage in starting phase
+                if free:
+                    app.stage += 1
             else:
                 # not enough resources
                 updateMessages(app, 'Not enough resources')
@@ -98,10 +102,6 @@ def buildRoad(app, mouseX, mouseY, free=False):
     
     # not a valid placement
     updateMessages(app, 'Not a valid placement')
-
-    # free means just started, so repeat the placement
-    if free:
-        app.stage -= 1
 
 
 def moveRobber(app, mouseX, mouseY):

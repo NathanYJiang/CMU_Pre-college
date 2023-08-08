@@ -64,7 +64,7 @@ def restart(app):
 
     # start game
     app.gameState = 'start game'
-    app.stage = 0
+    app.stage = 1
 
 
 def nextPlayer(app):
@@ -126,9 +126,9 @@ def redrawAll(app):
     # draw circles for placement
     if app.gameState == 'start game':
         if app.stage % 2 == 1:
-            drawRoadPlaces(app)
-        else:
             drawBuildingPlaces(app)
+        else:
+            drawRoadPlaces(app)
     elif app.gameState == 'build':
         if app.gameState == 'road':
             drawRoadPlaces(app)
@@ -163,14 +163,15 @@ def onMousePress(app, mouseX, mouseY):
 
     # starting action
     elif app.gameState == 'start game':
-        app.stage += 1
         if app.stage == 1:
             app.gameState = 'build settlement'
             buildSettlement(app, mouseX, mouseY, True)
         elif app.stage == 2:
             app.gameState = 'build road'
             buildRoad(app, mouseX, mouseY, True)
-            nextPlayer(app)
+            print(app.stage, 'hi lo')
+            if app.stage == 3:
+                nextPlayer(app)
         elif app.stage == 3:
             app.gameState = 'build settlement'
             buildSettlement(app, mouseX, mouseY, True)
@@ -190,12 +191,15 @@ def onMousePress(app, mouseX, mouseY):
         elif app.stage == 8:
             app.gameState = 'build road'
             buildRoad(app, mouseX, mouseY, True)
-            nextPlayer(app)
-            nextTurn(app)_
-            app.gameState = 'player turn'
 
-            # exit start game state
-            return
+            # if starting phase is over
+            if app.stage == 9:
+                nextPlayer(app)
+                nextTurn(app)
+                app.gameState = 'player turn'
+
+                # exit start game state
+                return
         
         app.gameState = 'start game'
         
@@ -227,6 +231,8 @@ def onMousePress(app, mouseX, mouseY):
                            f' with {app.curPlayer.vp} points')
             updateMessages(app, 'Press n for a new game')
             app.gameOver = True
+    
+    print(app.gameState)
 
 
 def onKeyPress(app, key):
