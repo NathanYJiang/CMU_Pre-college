@@ -226,8 +226,9 @@ def onMousePress(app, mouseX, mouseY):
         if app.curPlayer.vp >= 10:
             updateMessages(app, f'Player {app.curPlayerID+1} wins with ' + 
                            f'{app.curPlayer.vp} points!')
-            updateMessages(app, f'Player {((app.curPlayerID+1)%app.numPlayers)+1} got second place' + 
-                           f' with {app.curPlayer.vp} points')
+            otherPlayerID = (app.curPlayerID + 1) % app.numPlayers
+            updateMessages(app, f'Player {otherPlayerID+1} got second place' + 
+                           f' with {app.players[otherPlayerID].vp} points')
             updateMessages(app, 'Press n for a new game')
             app.gameOver = True
 
