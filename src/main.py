@@ -169,7 +169,6 @@ def onMousePress(app, mouseX, mouseY):
         elif app.stage == 2:
             app.gameState = 'build road'
             buildRoad(app, mouseX, mouseY, True)
-            print(app.stage, 'hi lo')
             if app.stage == 3:
                 nextPlayer(app)
         elif app.stage == 3:
@@ -184,7 +183,8 @@ def onMousePress(app, mouseX, mouseY):
         elif app.stage == 6:
             app.gameState = 'build road'
             buildRoad(app, mouseX, mouseY, True)
-            nextPlayer(app)
+            if app.stage == 7:
+                nextPlayer(app)
         elif app.stage == 7:
             app.gameState = 'build settlement'
             buildSettlement(app, mouseX, mouseY, True)
@@ -193,7 +193,7 @@ def onMousePress(app, mouseX, mouseY):
             buildRoad(app, mouseX, mouseY, True)
 
             # if starting phase is over
-            if app.stage == 9:
+            if app.stage >= 9:
                 nextPlayer(app)
                 nextTurn(app)
                 app.gameState = 'player turn'
