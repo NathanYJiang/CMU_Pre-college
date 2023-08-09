@@ -241,6 +241,9 @@ def onKeyPress(app, key):
           and app.gameState != 'start game'
           and key == 'escape'):
         app.gameState = 'player turn'
+    elif key == 'r':
+        for resource in app.resources:
+            app.curPlayer.cards[resource] += 1
 
 
 runApp(width=1350, height=850)
