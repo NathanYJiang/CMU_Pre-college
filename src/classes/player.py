@@ -7,6 +7,7 @@ class Player:
         self.color = app.colors[index]
         self.cards = dict()
         self.vp = 0
+        self.knights = 0
         for resource in app.resources:
             self.cards[resource] = 0
     

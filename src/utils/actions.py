@@ -6,9 +6,9 @@ from utils.messages import updateMessages
 def setStatus(button, app):
     # if button.label == 'trade':
     #     print('im not gonna do this yet')
-    # elif button.label == 'dv':
-    #     print('im not gonna do this yet either')
-    if button.label == 'road':
+    if button.label == 'knight':
+        app.gameState = 'knight robber'
+    elif button.label == 'road':
         app.gameState = 'build road'
     elif button.label == 'settlement':
         app.gameState = 'build settlement'
@@ -81,7 +81,7 @@ def buildRoad(app, mouseX, mouseY, free=False):
         if (distance(mouseX, mouseY, *getHexCoords(app, px, py)) <= 12
             and app.board.buildings[(px, py)] == None):
             if (free or (app.curPlayer.cards['lumber'] >= 1
-                and app.curPlayer.cards['brick'] >= 1)):
+                         and app.curPlayer.cards['brick'] >= 1)):
                 # enough resources
                 if not free:
                     app.curPlayer.cards['lumber'] -= 1
@@ -104,11 +104,28 @@ def buildRoad(app, mouseX, mouseY, free=False):
     updateMessages(app, 'Not a valid placement')
 
 
-def moveRobber(app, mouseX, mouseY):
+def moveRobber(app, mouseX, mouseY, knight=False):
     for (px, py) in app.board.centers:
         if (distance(mouseX, mouseY, *getHexCoords(app, px, py)) <= 18 
             and app.robberCoords != (px, py)):
-            app.robberCoords = (px, py)
+            if (knight and app.curPlayer.cards['grain'] >= 1
+                and app.curPlayer.cards['wool'] >= 1
+                and app.curPlayer.cards['ore'] >= 1):
+                # enough resources
+                if knight:
+                    app.curPlayer.cards['grain'] -= 1
+                    app.curPlayer.cards['wool'] -= 1
+                    app.curPlayer.cards['ore'] -= 1
+
+                app.robberCoords = (px, py)
+
+                # next stage in starting phase
+                if knight:
+                    app.curPlayer.knights += 1
+            else:
+                # not enough resources
+                updateMessages(app, 'Not enough resources')
+            
             app.gameState = 'player turn'
             return
 

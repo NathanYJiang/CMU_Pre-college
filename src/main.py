@@ -46,7 +46,7 @@ def restart(app):
     sx, sy = 450, 735
 
     # missing trade and dv
-    labels = ['road', 'settlement', 'city', 'end']
+    labels = ['knight', 'road', 'settlement', 'city', 'end']
     for i in range(len(labels)): 
         label = labels[i]
         app.buttons.append(Button(sx + 80*i, sy, label))
@@ -134,7 +134,7 @@ def redrawAll(app):
             drawRoadPlaces(app)
         else:
             drawBuildingPlaces(app)
-    elif app.gameState == 'move robber':
+    elif app.gameState in ['move robber', 'knight robber']:
         drawRobberPlaces(app)
 
 
@@ -222,6 +222,8 @@ def onMousePress(app, mouseX, mouseY):
             buildCity(app, mouseX, mouseY)
         elif app.gameState == 'move robber':
             moveRobber(app, mouseX, mouseY)
+        elif app.gameState == 'knight robber':
+            moveRobber(app, mouseX, mouseY, True)
         
         if app.curPlayer.vp >= 10:
             updateMessages(app, f'Player {app.curPlayerID+1} wins with ' + 

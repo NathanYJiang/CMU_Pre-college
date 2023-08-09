@@ -53,6 +53,10 @@ def getImages(app):
     robber = Image.open(getImagePath('robber.png'))
     app.robber = processImage(robber, (40, 40))
 
+    # small robber (for button icon)
+    smallRobber = Image.open(getImagePath('robber.png'))
+    app.smallRobber = processImage(robber, (30, 30))
+
     # end turn
     endturn = Image.open(getImagePath('endturn.png'))
     app.endturn = processImage(endturn, (30, 30))

@@ -24,6 +24,8 @@ class Button:
             app.board.drawCity(x, y+14, app.curPlayer.color)
         elif self.label == 'end':
             drawImage(app.endturn, x+2, y+9, align='center')
+        elif self.label == 'knight':
+            drawImage(app.smallRobber, x, y+10, align='center')
 
     def onClick(self, mouseX, mouseY):
         # not clicked, so return
