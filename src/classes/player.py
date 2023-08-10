@@ -3,16 +3,12 @@ from math import floor
 
 class Player:
     def __init__(self, app, index):
-        self.number = index + 1
         self.color = app.colors[index]
         self.cards = dict()
         self.vp = 0
         self.knights = 0
         for resource in app.resources:
             self.cards[resource] = 0
-    
-    def __repr__(self):
-        return f'Player {self.number}'
 
     def getResources(self, app):
         for (px, py) in app.board.centers:
