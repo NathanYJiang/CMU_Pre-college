@@ -6,47 +6,71 @@ def setStatus(button, app):
     if button.label == 'trade':
         app.gameState = 'trade'
         updateMessages(app, 'Pick a resource to trade away')
+        
     elif button.label == 'knight':
-        app.gameState = 'knight robber'
-        updateMessages(app, f'Player {app.curPlayerID+1} moving robber')
+        if (app.curPlayer.cards['grain'] >= 1
+            and app.curPlayer.cards['wool'] >= 1
+            and app.curPlayer.cards['ore'] >= 1):
+            # enough resources
+            app.gameState = 'knight robber'
+            updateMessages(app, f'Player {app.curPlayerID+1} moving robber')
+        else:
+            # not enough resources
+            updateMessages(app, 'Not enough resources to buy a knight')
+
     elif button.label == 'road':
-        app.gameState = 'build road'
-        updateMessages(app, f'Player {app.curPlayerID+1} placing road')
+        if (app.curPlayer.cards['lumber'] >= 1 
+            and app.curPlayer.cards['brick'] >= 1):
+            # enough resources
+            app.gameState = 'build road'
+            updateMessages(app, f'Player {app.curPlayerID+1} placing road')
+        else:
+            # not enough resources
+            updateMessages(app, 'Not enough resources to build a road')
+
     elif button.label == 'settlement':
-        app.gameState = 'build settlement'
-        updateMessages(app, f'Player {app.curPlayerID+1} placing settlement')
+        if (app.curPlayer.cards['lumber'] >= 1
+            and app.curPlayer.cards['brick'] >= 1
+            and app.curPlayer.cards['wool'] >= 1
+            and app.curPlayer.cards['grain'] >= 1):
+            # enough resources
+            app.gameState = 'build settlement'
+            updateMessages(app, f'Player {app.curPlayerID+1} placing settlement')
+        else:
+            # not enough resources
+            updateMessages(app, 'Not enough resources to build a settlement')
+
     elif button.label == 'city':
-        app.gameState = 'build city'
-        updateMessages(app, f'Player {app.curPlayerID+1} placing city')
+        if (app.curPlayer.cards['grain'] >= 2 
+            and app.curPlayer.cards['ore'] >= 3):
+            # enough resources
+            app.gameState = 'build city'
+            updateMessages(app, f'Player {app.curPlayerID+1} placing city')
+        else:
+            # not enough resources
+            updateMessages(app, 'Not enough resources to build a city')
+
     else:
         app.gameState = 'end turn'
 
 
 def buildSettlement(app, mouseX, mouseY, free=False):
-    # go through coords and check if enough resources to place a settlement
     for (px, py) in app.board.coords:
         if (distance(mouseX, mouseY, *getHexCoords(app, px, py)) <= 12
             and app.board.buildings[(px, py)] == None):
-            resourcesNeeded = ['lumber', 'brick', 'wool', 'grain']
-
-            # learned the all function from https://docs.python.org/3/library/functions.html#all
-            if free or all(app.curPlayer.cards[r] >= 1 for r in resourcesNeeded):
-                # enough resources
-                if not free:
-                    for r in resourcesNeeded:
-                        app.curPlayer.cards[r] -= 1
-                
-                app.board.buildings[(px, py)] = (1, app.curPlayer.color)
-                updateMessages(app, f'Player {app.curPlayerID+1} built a settlement')
-                app.curPlayer.vp += 1
-
-                # next stage in starting phase
-                if free:
-                    app.stage += 1
+            if free:
+                # next stage in start phase
+                app.stage += 1
             else:
-                # not enough resources
-                updateMessages(app, 'Not enough resources to build a settlement')
+                app.curPlayer.cards['lumber'] -= 1
+                app.curPlayer.cards['brick'] -= 1
+                app.curPlayer.cards['wool'] -= 1
+                app.curPlayer.cards['grain'] -= 1
             
+            app.board.buildings[(px, py)] = (1, app.curPlayer.color)
+            updateMessages(app, f'Player {app.curPlayerID+1} built a settlement')
+            app.curPlayer.vp += 1
+
             app.gameState = 'player turn'
             return
     
@@ -59,19 +83,13 @@ def buildCity(app, mouseX, mouseY):
     for (px, py) in app.board.coords:
         if (distance(mouseX, mouseY, *getHexCoords(app, px, py)) <= 12
             and app.board.buildings[(px, py)] == (1, app.curPlayer.color)):
-            if (app.curPlayer.cards['grain'] >= 2 
-                and app.curPlayer.cards['ore'] >= 3):
-                # enough resources
-                app.curPlayer.cards['grain'] -= 2 
-                app.curPlayer.cards['ore'] -= 3
+            app.curPlayer.cards['grain'] -= 2 
+            app.curPlayer.cards['ore'] -= 3
 
-                app.board.buildings[(px, py)] = (2, app.curPlayer.color)
-                updateMessages(app, f'Player {app.curPlayerID+1} built a city')
-                app.curPlayer.vp += 1
-            else:
-                # not enough resources
-                updateMessages(app, 'Not enough resources to build a city')
-            
+            app.board.buildings[(px, py)] = (2, app.curPlayer.color)
+            updateMessages(app, f'Player {app.curPlayerID+1} built a city')
+            app.curPlayer.vp += 1
+
             app.gameState = 'player turn'
             return
     
@@ -84,23 +102,16 @@ def buildRoad(app, mouseX, mouseY, free=False):
     for (px, py) in app.board.midpoints:
         if (distance(mouseX, mouseY, *getHexCoords(app, px, py)) <= 12
             and app.board.buildings[(px, py)] == None):
-            if (free or (app.curPlayer.cards['lumber'] >= 1
-                         and app.curPlayer.cards['brick'] >= 1)):
+            if free:
                 # enough resources
-                if not free:
-                    app.curPlayer.cards['lumber'] -= 1
-                    app.curPlayer.cards['brick'] -= 1
-
-                app.board.buildings[(px, py)] = ('r', app.curPlayer.color)
-                updateMessages(app, f'Player {app.curPlayerID+1} built a road')
-
-                # next stage in starting phase
-                if free:
-                    app.stage += 1
+                app.stage += 1
             else:
-                # not enough resources
-                updateMessages(app, 'Not enough resources to build a road')
-            
+                app.curPlayer.cards['lumber'] -= 1
+                app.curPlayer.cards['brick'] -= 1
+
+            app.board.buildings[(px, py)] = ('r', app.curPlayer.color)
+            updateMessages(app, f'Player {app.curPlayerID+1} built a road')
+
             app.gameState = 'player turn'
             return
     
@@ -112,24 +123,13 @@ def moveRobber(app, mouseX, mouseY, knight=False):
     for (px, py) in app.board.centers:
         if (distance(mouseX, mouseY, *getHexCoords(app, px, py)) <= 18 
             and app.robberCoords != (px, py)):
-            if (not knight or (app.curPlayer.cards['grain'] >= 1
-                and app.curPlayer.cards['wool'] >= 1
-                and app.curPlayer.cards['ore'] >= 1)):
-                # enough resources
-                if knight:
-                    app.curPlayer.cards['grain'] -= 1
-                    app.curPlayer.cards['wool'] -= 1
-                    app.curPlayer.cards['ore'] -= 1
+            if knight:
+                app.curPlayer.cards['grain'] -= 1
+                app.curPlayer.cards['wool'] -= 1
+                app.curPlayer.cards['ore'] -= 1
 
-                app.robberCoords = (px, py)
+            app.robberCoords = (px, py)
 
-                # next stage in starting phase
-                if knight:
-                    app.curPlayer.knights += 1
-            else:
-                # not enough resources
-                updateMessages(app, 'Not enough resources to buy a knight')
-            
             app.gameState = 'player turn'
             return
 
