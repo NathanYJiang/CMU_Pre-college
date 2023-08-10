@@ -6,7 +6,8 @@ from classes.player import Player
 from classes.button import Button
 import random
 from utils.messages import updateMessages
-from utils.actions import buildRoad, buildSettlement, buildCity, moveRobber, trade, getResource
+from utils.actions import (buildRoad, buildSettlement, buildCity, moveRobber, 
+                           trade, getResource)
 
 
 def onAppStart(app):
@@ -45,15 +46,14 @@ def restart(app):
     # action buttons
     app.buttons = []
     sx, sy = 450, 735
-    labels = ['knight', 'road', 'settlement', 'city', 'end']
+    labels = ['trade', 'knight', 'road', 'settlement', 'city', 'end']
     for i in range(len(labels)): 
-        label = labels[i]
-        app.buttons.append(Button(sx + 80*i, sy, label))
+        app.buttons.append(Button(sx + 80*i, sy, labels[i]))
 
     # resource buttons
     app.resButtons = []
     for i in range(5):
-        app.resButtons.append(Button(45 + 70*i, 685, app.resources[i]))
+        app.resButtons.append(Button(45 + 70*i, 685, app.resources[i], True))
 
     # messages
     app.messages = ['Welcome to Settlers of Ketan']
@@ -241,6 +241,10 @@ def onMousePress(app, mouseX, mouseY):
                            f' with {app.players[otherPlayerID].vp} points')
             updateMessages(app, 'Press n for a new game')
             app.gameOver = True
+        
+        print('hiwooO!')
+        print(app.gameState)
+        print(3)
 
 
 def onKeyPress(app, key):

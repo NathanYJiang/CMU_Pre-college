@@ -107,9 +107,9 @@ def moveRobber(app, mouseX, mouseY, knight=False):
     for (px, py) in app.board.centers:
         if (distance(mouseX, mouseY, *getHexCoords(app, px, py)) <= 18 
             and app.robberCoords != (px, py)):
-            if (knight and app.curPlayer.cards['grain'] >= 1
+            if (not knight or (app.curPlayer.cards['grain'] >= 1
                 and app.curPlayer.cards['wool'] >= 1
-                and app.curPlayer.cards['ore'] >= 1):
+                and app.curPlayer.cards['ore'] >= 1)):
                 # enough resources
                 if knight:
                     app.curPlayer.cards['grain'] -= 1
@@ -133,7 +133,7 @@ def moveRobber(app, mouseX, mouseY, knight=False):
 
 def trade(app, mouseX, mouseY):
     for resButton in app.resButtons:
-        if onClick(resButton, mouseX, mouseY):
+        if resButton.onClick(mouseX, mouseY):
             if app.curPlayer.cards[resButton.label] >= 3:
                 # enough resources
                 app.curPlayer.cards[resButton.label] -= 3
