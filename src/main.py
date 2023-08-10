@@ -163,7 +163,6 @@ def drawRobberPlaces(app):
 
 
 def onMousePress(app, mouseX, mouseY):
-    updateMessages(app, f'the gamestate is {app.gameState}')
     # no actions allowed if the game is over
     if app.gameOver:
         return
@@ -232,7 +231,6 @@ def onMousePress(app, mouseX, mouseY):
         elif app.gameState == 'knight robber':
             moveRobber(app, mouseX, mouseY, True)
         elif app.gameState == 'trade':
-            updateMessages(app, 'hello debug')
             trade(app, mouseX, mouseY)
         elif app.gameState == 'pick resource':
             pickResource(app, mouseX, mouseY)
@@ -253,6 +251,7 @@ def onKeyPress(app, key):
             restart(app)
     elif (app.gameState != 'move robber'
           and app.gameState != 'start game'
+          and app.gameState != 'pick resource'
           and key == 'escape'):
         app.gameState = 'player turn'
     elif key == 'r':

@@ -4,7 +4,7 @@ from utils.messages import updateMessages
 
 def setStatus(button, app):
     if button.label == 'trade':
-        app.gameState == 'trade'
+        app.gameState = 'trade'
         updateMessages(app, 'Pick a resource to trade away')
     elif button.label == 'knight':
         app.gameState = 'knight robber'
@@ -134,9 +134,7 @@ def moveRobber(app, mouseX, mouseY, knight=False):
 
 def trade(app, mouseX, mouseY):
     for resButton in app.resButtons:
-        print('jooop')
-        if resButton.onClick(mouseX, mouseY):
-            print('yaeeyy')
+        if resButton.onClick(app, mouseX, mouseY):
             if app.curPlayer.cards[resButton.label] >= 3:
                 # enough resources
                 app.curPlayer.cards[resButton.label] -= 3
@@ -144,20 +142,20 @@ def trade(app, mouseX, mouseY):
                 app.gameState = 'pick resource'
             else:
                 # not enough resources
-                updateMessages(app, 'Not enough resources')
-            
-            app.gameState = 'player turn'
+                updateMessages(app, 'Not enough of that resource to trade')
+                app.gameState = 'player turn'
+
             return
 
     # not a valid placement
-    updateMessages(app, 'Not a valid placement')
+    updateMessages(app, 'Not a valid resource')
 
 def pickResource(app, mouseX, mouseY):
     for resButton in app.resButtons:
-        if resButton.onClick(mouseX, mouseY):
+        if resButton.onClick(app, mouseX, mouseY):
             app.curPlayer.cards[resButton.label] += 1
             app.gameState = 'player turn'
             return
 
     # not a valid placement
-    updateMessages(app, 'Not a valid placement')
+    updateMessages(app, 'Not a valid resource')
