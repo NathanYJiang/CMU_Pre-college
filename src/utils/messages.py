@@ -5,5 +5,5 @@ def updateMessages(app, curMessage):
     app.messages.append(curMessage)
 
     # too long
-    if len(app.messages) > 12:
+    if len(app.messages) > 15:
         app.messages.pop(0)

@@ -58,6 +58,16 @@ def getImages(app):
     endturn = Image.open(getImagePath('endturn.png'))
     app.endturn = processImage(endturn, (30, 30))
 
+    # building costs
+    app.buildCost = []
+    for i in range(len(app.players)):
+        buildCost = Image.open(getImagePath(f'p{i+1}BuildingCosts.png'))
+        app.buildCost.append(processImage(buildCost, (350, 350)))
+
+    # trade
+    trade = Image.open(getImagePath('trade.png'))
+    app.trade = processImage(trade, (40, 40))
+
 
 def processImage(image, size):
     # converts, resizes, and then sharpens an image

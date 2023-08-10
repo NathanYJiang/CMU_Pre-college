@@ -31,6 +31,8 @@ class Button:
             drawImage(app.endturn, x+2, y+9, align='center')
         elif self.label == 'knight':
             drawImage(app.smallRobber, x, y+10, align='center')
+        elif self.label == 'trade':
+            drawImage(app.trade, x, y+10, align='center')
 
     def onClick(self, app, mouseX, mouseY):
         # not clicked, so return

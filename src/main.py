@@ -45,7 +45,7 @@ def restart(app):
     # buttons
     # action buttons
     app.buttons = []
-    sx, sy = 450, 735
+    sx, sy = 430, 735
     labels = ['trade', 'knight', 'road', 'settlement', 'city', 'end']
     for i in range(len(labels)): 
         app.buttons.append(Button(sx + 80*i, sy, labels[i]))
@@ -128,6 +128,9 @@ def redrawAll(app):
     # draw messages
     for i in range(len(app.messages)):
         drawLabel(app.messages[i], 1100, 50 + 25*i, size=16)
+    
+    # draw building costs
+    drawImage(app.buildCost[app.curPlayerID], 1100, 620, align='center')
     
     # draw circles for placement
     if app.gameState == 'start game':
