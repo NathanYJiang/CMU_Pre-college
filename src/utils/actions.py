@@ -154,6 +154,7 @@ def pickResource(app, mouseX, mouseY):
     for resButton in app.resButtons:
         if resButton.onClick(app, mouseX, mouseY):
             app.curPlayer.cards[resButton.label] += 1
+            updateMessages(app, f'Player {app.curPlayerID+1})
             app.gameState = 'player turn'
             return
 

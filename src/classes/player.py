@@ -11,6 +11,9 @@ class Player:
         for resource in app.resources:
             self.cards[resource] = 0
     
+    def __repr__(self):
+        return f'Player {self.number}'
+
     def getResources(self, app):
         for (px, py) in app.board.centers:
             # robber is blocking this hex

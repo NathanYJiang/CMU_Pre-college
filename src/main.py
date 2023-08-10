@@ -32,7 +32,7 @@ def restart(app):
     # new game
     app.gameOver = False
 
-    # number of players (fixed at 2 rn)
+    # number of players (fixed at 2)
     app.numPlayers = 2
     app.players = []
     for i in range(app.numPlayers):
