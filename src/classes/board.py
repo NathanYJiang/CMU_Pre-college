@@ -129,7 +129,7 @@ class Board:
             if px % 2 == 0 and py % 2 == 0 and py < 2:
                 self.drawLand(app, px, py, px, py+1)
         
-        # coords for testing
+        # coordinate grid
         # for (px, py) in self.coords:
         #     # draw points
         #     self.drawDot(app, px, py)

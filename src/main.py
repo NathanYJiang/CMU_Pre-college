@@ -7,7 +7,7 @@ from classes.button import Button
 import random
 from utils.messages import updateMessages
 from utils.actions import (buildRoad, buildSettlement, buildCity, moveRobber, 
-                           trade, getResource)
+                           trade, pickResource)
 
 
 def onAppStart(app):
@@ -108,8 +108,10 @@ def redrawAll(app):
     drawImage(app.dice[app.dice1], 670, 610)
     drawImage(app.dice[app.dice2], 755, 610)
 
-    # draw player icon
+    # draw player icon and vp counter
     drawImage(app.icons[app.curPlayerID], 60, 60, align='center')
+    drawLabel(app.curPlayer.vp, 60, 110, align='center', size=36, 
+              font='monospace')
 
     # draw player resources
     drawRect(30, 670, 360, 150, fill=app.curPlayer.color, border='black')
@@ -161,8 +163,9 @@ def drawRobberPlaces(app):
 
 
 def onMousePress(app, mouseX, mouseY):
+    updateMessages(app, f'the gamestate is {app.gameState}')
     # no actions allowed if the game is over
-    if app.gameOver: 
+    if app.gameOver:
         return
 
     # starting action
@@ -210,7 +213,7 @@ def onMousePress(app, mouseX, mouseY):
     # on player turn, check actions of all buttons
     elif app.gameState == 'player turn':
         for button in app.buttons:
-            if button.onClick(mouseX, mouseY): 
+            if button.onClick(app, mouseX, mouseY): 
                 break
 
         if app.gameState == 'end turn':
@@ -229,9 +232,10 @@ def onMousePress(app, mouseX, mouseY):
         elif app.gameState == 'knight robber':
             moveRobber(app, mouseX, mouseY, True)
         elif app.gameState == 'trade':
+            updateMessages(app, 'hello debug')
             trade(app, mouseX, mouseY)
-        elif app.gameState == 'get resource':
-            getResource(app, mouseX, mouseY)
+        elif app.gameState == 'pick resource':
+            pickResource(app, mouseX, mouseY)
         
         if app.curPlayer.vp >= 10:
             updateMessages(app, f'Player {app.curPlayerID+1} wins with ' + 
@@ -241,17 +245,13 @@ def onMousePress(app, mouseX, mouseY):
                            f' with {app.players[otherPlayerID].vp} points')
             updateMessages(app, 'Press n for a new game')
             app.gameOver = True
-        
-        print('hiwooO!')
-        print(app.gameState)
-        print(3)
 
 
 def onKeyPress(app, key):
     if app.gameOver:
         if key == 'n':
             restart(app)
-    elif (app.gameState != 'move robber' 
+    elif (app.gameState != 'move robber'
           and app.gameState != 'start game'
           and key == 'escape'):
         app.gameState = 'player turn'

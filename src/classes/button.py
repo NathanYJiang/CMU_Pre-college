@@ -32,13 +32,13 @@ class Button:
         elif self.label == 'knight':
             drawImage(app.smallRobber, x, y+10, align='center')
 
-    def onClick(self, mouseX, mouseY):
+    def onClick(self, app, mouseX, mouseY):
         # not clicked, so return
         if not ((self.x <= mouseX <= self.x + self.width) 
                 and (self.y <= mouseY <= self.y + self.height)): return False
         
         if not self.res:
             setStatus(self, app)
-            
+
         return True
     
