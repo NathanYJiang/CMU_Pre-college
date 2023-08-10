@@ -6,7 +6,7 @@ from classes.player import Player
 from classes.button import Button
 import random
 from utils.messages import updateMessages
-from utils.actions import buildRoad, buildSettlement, buildCity, moveRobber
+from utils.actions import buildRoad, buildSettlement, buildCity, moveRobber, trade, getResource
 
 
 def onAppStart(app):
@@ -52,6 +52,8 @@ def restart(app):
 
     # resource buttons
     app.resButtons = []
+    for i in range(5):
+        app.resButtons.append(Button(45 + 70*i, 685, app.resources[i]))
 
     # messages
     app.messages = ['Welcome to Settlers of Ketan']
@@ -226,6 +228,10 @@ def onMousePress(app, mouseX, mouseY):
             moveRobber(app, mouseX, mouseY)
         elif app.gameState == 'knight robber':
             moveRobber(app, mouseX, mouseY, True)
+        elif app.gameState == 'trade':
+            trade(app, mouseX, mouseY)
+        elif app.gameState == 'get resource':
+            getResource(app, mouseX, mouseY)
         
         if app.curPlayer.vp >= 10:
             updateMessages(app, f'Player {app.curPlayerID+1} wins with ' + 

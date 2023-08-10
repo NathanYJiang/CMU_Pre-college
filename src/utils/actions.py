@@ -2,7 +2,6 @@ from cmu_graphics import *
 from utils.hexCoords import getHexCoords
 from utils.messages import updateMessages
 
-
 def setStatus(button, app):
     if button.label == 'trade':
         app.gameState == 'trade'
@@ -126,6 +125,34 @@ def moveRobber(app, mouseX, mouseY, knight=False):
                 # not enough resources
                 updateMessages(app, 'Not enough resources')
             
+            app.gameState = 'player turn'
+            return
+
+    # not a valid placement
+    updateMessages(app, 'Not a valid placement')
+
+def trade(app, mouseX, mouseY):
+    for resButton in app.resButtons:
+        if onClick(resButton, mouseX, mouseY):
+            if app.curPlayer.cards[resButton.label] >= 3:
+                # enough resources
+                app.curPlayer.cards[resButton.label] -= 3
+                updateMessages(app, 'Pick a resource')
+                app.gameState = 'get resource'
+            else:
+                # not enough resources
+                updateMessages(app, 'Not enough resources')
+            
+            app.gameState = 'player turn'
+            return
+
+    # not a valid placement
+    updateMessages(app, 'Not a valid placement')
+
+def getResource(app, mouseX, mouseY):
+    for resButton in app.resButtons:
+        if resButton.onClick(mouseX, mouseY):
+            app.curPlayer.cards[resButton.label] += 1
             app.gameState = 'player turn'
             return
 

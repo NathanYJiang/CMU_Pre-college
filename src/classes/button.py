@@ -3,11 +3,16 @@ from utils.actions import setStatus
 
 
 class Button:
-    def __init__(self, x, y, label):
+    def __init__(self, x, y, label, res=False):
         self.x = x
         self.y = y
-        self.width = 70
-        self.height = 70
+        self.res = res
+        if res:
+            self.width = 50
+            self.height = 73
+        else:
+            self.width = 70
+            self.height = 70
         self.label = label
 
     def draw(self, app):
@@ -32,6 +37,8 @@ class Button:
         if not ((self.x <= mouseX <= self.x + self.width) 
                 and (self.y <= mouseY <= self.y + self.height)): return False
         
-        setStatus(self, app)
+        if not self.res:
+            setStatus(self, app)
+            
         return True
     

@@ -129,9 +129,10 @@ class Board:
             if px % 2 == 0 and py % 2 == 0 and py < 2:
                 self.drawLand(app, px, py, px, py+1)
         
-        for (px, py) in self.coords:
-            # draw points
-            self.drawDot(app, px, py)
+        # coords for testing
+        # for (px, py) in self.coords:
+        #     # draw points
+        #     self.drawDot(app, px, py)
     
     def drawLand(self, app, x1, y1, x2, y2):
         # dont allow coords with both x and y as .5
