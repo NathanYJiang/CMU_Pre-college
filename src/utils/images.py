@@ -49,12 +49,9 @@ def getImages(app):
         resImage = Image.open(getImagePath(f'resources--{resource}.png'))
         app.resImages[resource] = processImage(resImage, (50, 80))
     
-    # robber
+    # robber and small robber (for button icon)
     robber = Image.open(getImagePath('robber.png'))
     app.robber = processImage(robber, (40, 40))
-
-    # small robber (for button icon)
-    smallRobber = Image.open(getImagePath('robber.png'))
     app.smallRobber = processImage(robber, (30, 30))
 
     # end turn

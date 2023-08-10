@@ -42,14 +42,16 @@ def restart(app):
     getImages(app)
     
     # buttons
+    # action buttons
     app.buttons = []
     sx, sy = 450, 735
-
-    # missing trade and dv
     labels = ['knight', 'road', 'settlement', 'city', 'end']
     for i in range(len(labels)): 
         label = labels[i]
         app.buttons.append(Button(sx + 80*i, sy, label))
+
+    # resource buttons
+    app.resButtons = []
 
     # messages
     app.messages = ['Welcome to Settlers of Ketan']

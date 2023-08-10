@@ -4,9 +4,9 @@ from utils.messages import updateMessages
 
 
 def setStatus(button, app):
-    # if button.label == 'trade':
-    #     print('im not gonna do this yet')
-    if button.label == 'knight':
+    if button.label == 'trade':
+        app.gameState == 'trade'
+    elif button.label == 'knight':
         app.gameState = 'knight robber'
     elif button.label == 'road':
         app.gameState = 'build road'
