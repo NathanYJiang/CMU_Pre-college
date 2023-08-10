@@ -3,16 +3,12 @@ from utils.actions import setStatus
 
 
 class Button:
-    def __init__(self, x, y, label, res=False):
+    def __init__(self, x, y, width, height, label, res=False):
         self.x = x
         self.y = y
         self.res = res
-        if res:
-            self.width = 50
-            self.height = 73
-        else:
-            self.width = 70
-            self.height = 70
+        self.width = width
+        self.height = height
         self.label = label
 
     def draw(self, app):

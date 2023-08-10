@@ -3,7 +3,6 @@ import pathlib
 from cmu_graphics import CMUImage
 from PIL import Image, ImageFilter
 
-
 # credit for number tokens goes to: https://catanworldexplorers.fandom.com/wiki/Settlement
 # credit for dice images goes to: https://game-icons.net/1x1/delapouite/dice-six-faces-one.html
 # credit for end turn image goes to: https://www.pngmart.com/image/tag/fast-forward

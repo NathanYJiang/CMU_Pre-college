@@ -11,6 +11,7 @@ from utils.actions import (buildRoad, buildSettlement, buildCity, moveRobber,
 
 
 def onAppStart(app):
+    # fixed variables
     app.s = 70
     app.startX = 0
     app.startY = 300
@@ -25,7 +26,7 @@ def onAppStart(app):
         'field': 'grain',
         'mountain': 'ore'
     }
-    
+
     restart(app)
 
 
@@ -38,23 +39,26 @@ def restart(app):
     app.players = []
     for i in range(app.numPlayers):
         app.players.append(Player(app, i))
-    
-    # make a new board and get all the images
-    app.board = Board()
+
+    # get all images
     getImages(app)
-    
+
     # buttons
     # action buttons
     app.buttons = []
     sx, sy = 430, 735
     labels = ['trade', 'knight', 'road', 'settlement', 'city', 'end']
     for i in range(len(labels)): 
-        app.buttons.append(Button(sx + 80*i, sy, labels[i]))
+        app.buttons.append(Button(sx + 80*i, sy, 70, 70, labels[i]))
 
     # resource buttons
     app.resButtons = []
     for i in range(5):
-        app.resButtons.append(Button(45 + 70*i, 685, app.resources[i], True))
+        app.resButtons.append(Button(45 + 70*i, 685, 50, 73, app.resources[i], 
+                                     True))
+    
+    # make a new board and get all the images
+    app.board = Board()
 
     # messages
     app.messages = ['Welcome to Settlers of Ketan']
@@ -66,6 +70,7 @@ def restart(app):
     # pick random player
     app.curPlayerID = random.randint(0, app.numPlayers-1)
     nextPlayer(app)
+    updateMessages(app, f'Player {app.curPlayerID+1} placing settlement')
 
     # start game
     app.gameState = 'start game'
@@ -88,10 +93,11 @@ def nextTurn(app):
     app.dice2 = random.randint(1, 6)
     app.roll = app.dice1 + app.dice2
 
-    # rolled a robber!
+    # rolled a robber
     if app.roll == 7:
         updateMessages(app, f'Player {app.curPlayerID+1} rolled 7')
         app.gameState = 'move robber'
+        updateMessages(app, f'Player {app.curPlayerID+1} moving robber')
     else:
         updateMessages(app, f'Player {app.curPlayerID+1} rolled {app.roll}')
         # give players resources
@@ -104,9 +110,11 @@ def nextTurn(app):
 def redrawAll(app):
     if app.screen == 'start':
         drawImage(app.setting, 0, 0)
-        drawImage(app.logo, app.width//2, app.height//4, align='center')
-        drawLabel('Click to start', app.width//2, 3*app.height//5, 
-                  align='center', size=32, font='monospace', bold=True)
+        drawImage(app.logo, app.width//2, 190, align='center')
+        drawLabel('Created by Nathan Jiang', app.width//2, 285, align='center', 
+                  size=28, font='monospace', italic=True)
+        drawLabel('Click to start', app.width//2, 500, align='center', size=48, 
+                  font='monospace', bold=True)
     elif app.screen == 'game':
         # draw board
         app.board.draw(app)
@@ -175,6 +183,7 @@ def drawRobberPlaces(app):
 def onMousePress(app, mouseX, mouseY):
     if app.screen == 'start':
         app.screen = 'game'
+        restart(app)
 
     # no actions allowed if the game is over
     elif app.screen == 'game':
@@ -221,8 +230,15 @@ def onMousePress(app, mouseX, mouseY):
                     # exit start game state
                     return
             
+            if app.gameState == 'player turn':
+                message = f'Player {app.curPlayerID+1} placing '
+                if app.stage % 2 == 0:
+                    updateMessages(app, message + 'road')
+                else:
+                    updateMessages(app, message + 'settlement')
+
             app.gameState = 'start game'
-            
+
         # on player turn, check actions of all buttons
         elif app.gameState == 'player turn':
             for button in app.buttons:
@@ -250,12 +266,13 @@ def onMousePress(app, mouseX, mouseY):
                 pickResource(app, mouseX, mouseY)
             
             if app.curPlayer.vp >= 10:
-                updateMessages(app, f'Player {app.curPlayerID+1} wins with ' + 
-                            f'{app.curPlayer.vp} points!')
+                updateMessages(app, f'Player {app.curPlayerID+1} wins with ' 
+                               + f'{app.curPlayer.vp} points!')
                 otherPlayerID = (app.curPlayerID + 1) % app.numPlayers
-                updateMessages(app, f'Player {otherPlayerID+1} got second place' + 
-                            f' with {app.players[otherPlayerID].vp} points')
-                updateMessages(app, 'Press n for a new game')
+                updateMessages(app, f'Player {otherPlayerID+1} got second place' 
+                               + f' with {app.players[otherPlayerID].vp} points')
+                updateMessages(app, 'Press n for a new game or h to return ' 
+                               + 'to the home screen')
                 app.gameOver = True
 
 
@@ -263,6 +280,8 @@ def onKeyPress(app, key):
     if app.gameOver:
         if key == 'n':
             restart(app)
+        elif key == 'h':
+            app.screen = 'start'
     elif (app.gameState != 'move robber'
           and app.gameState != 'start game'
           and app.gameState != 'pick resource'

@@ -8,12 +8,16 @@ def setStatus(button, app):
         updateMessages(app, 'Pick a resource to trade away')
     elif button.label == 'knight':
         app.gameState = 'knight robber'
+        updateMessages(app, f'Player {app.curPlayerID+1} moving robber')
     elif button.label == 'road':
         app.gameState = 'build road'
+        updateMessages(app, f'Player {app.curPlayerID+1} placing road')
     elif button.label == 'settlement':
         app.gameState = 'build settlement'
+        updateMessages(app, f'Player {app.curPlayerID+1} placing settlement')
     elif button.label == 'city':
         app.gameState = 'build city'
+        updateMessages(app, f'Player {app.curPlayerID+1} placing city')
     else:
         app.gameState = 'end turn'
 
