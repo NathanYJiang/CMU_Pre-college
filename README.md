@@ -1,1 +1,0 @@
-Heavily inspired by https://colonist.io/

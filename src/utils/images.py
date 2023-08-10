@@ -7,6 +7,8 @@ from PIL import Image, ImageFilter
 # credit for number tokens goes to: https://catanworldexplorers.fandom.com/wiki/Settlement
 # credit for dice images goes to: https://game-icons.net/1x1/delapouite/dice-six-faces-one.html
 # credit for end turn image goes to: https://www.pngmart.com/image/tag/fast-forward
+# credit for trade icon goes to: https://www.flaticon.com/free-icon/swap_3466554
+# credit for background goes to: https://catanuniverse.com/en/media/
 # credit for other images goes to: https://github.com/BryantCabrera/Settlers-of-Catan/tree/master/resources/imgs
 # used https://tinypng.com/ to minimize images
 # PIL sharpen learned from: https://pythonexamples.org/python-pillow-image-sharpen/
@@ -67,6 +69,15 @@ def getImages(app):
     # trade
     trade = Image.open(getImagePath('trade.png'))
     app.trade = processImage(trade, (40, 40))
+
+    # start screen
+    # logo
+    logo = Image.open(getImagePath('ketanlogo.png'))
+    app.logo = processImage(logo, (1200, 120))
+
+    # background
+    setting = Image.open(getImagePath('ketanbackground.png'))
+    app.setting = processImage(setting, (2000, 850))
 
 
 def processImage(image, size):

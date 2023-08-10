@@ -14,6 +14,7 @@ def onAppStart(app):
     app.s = 70
     app.startX = 0
     app.startY = 300
+    app.screen = 'start'
     app.colors = [rgb(237, 1, 1), rgb(15, 152, 245), rgb(246, 247, 239), 
                   rgb(246, 139, 46)]
     app.resources = ['lumber', 'brick', 'wool', 'grain', 'ore']
@@ -101,50 +102,56 @@ def nextTurn(app):
 
 
 def redrawAll(app):
-    # draw board
-    app.board.draw(app)
+    if app.screen == 'start':
+        drawImage(app.setting, 0, 0)
+        drawImage(app.logo, app.width//2, app.height//4, align='center')
+        drawLabel('Click to start', app.width//2, 3*app.height//5, 
+                  align='center', size=32, font='monospace', bold=True)
+    elif app.screen == 'game':
+        # draw board
+        app.board.draw(app)
 
-    # draw dice
-    drawImage(app.dice[app.dice1], 670, 610)
-    drawImage(app.dice[app.dice2], 755, 610)
+        # draw dice
+        drawImage(app.dice[app.dice1], 670, 610)
+        drawImage(app.dice[app.dice2], 755, 610)
 
-    # draw player icon and vp counter
-    drawImage(app.icons[app.curPlayerID], 60, 60, align='center')
-    drawLabel(app.curPlayer.vp, 60, 110, align='center', size=36, 
-              font='monospace')
+        # draw player icon and vp counter
+        drawImage(app.icons[app.curPlayerID], 60, 60, align='center')
+        drawLabel(app.curPlayer.vp, 60, 110, align='center', size=36, 
+                font='monospace')
 
-    # draw player resources
-    drawRect(30, 670, 360, 150, fill=app.curPlayer.color, border='black')
-    for i in range(5):
-        resource = app.resources[i]
-        drawImage(app.resImages[resource], 45 + 70*i, 685)
-        drawLabel(app.curPlayer.cards[resource], 70 + 70*i, 790, size=36, 
-                  font='monospace')
-    
-    # draw buttons
-    for button in app.buttons:
-        button.draw(app)
-    
-    # draw messages
-    for i in range(len(app.messages)):
-        drawLabel(app.messages[i], 1100, 50 + 25*i, size=16)
-    
-    # draw building costs
-    drawImage(app.buildCost[app.curPlayerID], 1100, 620, align='center')
-    
-    # draw circles for placement
-    if app.gameState == 'start game':
-        if app.stage % 2 == 1:
-            drawBuildingPlaces(app)
-        else:
-            drawRoadPlaces(app)
-    elif app.gameState[:5] == 'build':
-        if app.gameState[6:] == 'road':
-            drawRoadPlaces(app)
-        else:
-            drawBuildingPlaces(app)
-    elif app.gameState in ['move robber', 'knight robber']:
-        drawRobberPlaces(app)
+        # draw player resources
+        drawRect(30, 670, 360, 150, fill=app.curPlayer.color, border='black')
+        for i in range(5):
+            resource = app.resources[i]
+            drawImage(app.resImages[resource], 45 + 70*i, 685)
+            drawLabel(app.curPlayer.cards[resource], 70 + 70*i, 790, size=36, 
+                    font='monospace')
+        
+        # draw buttons
+        for button in app.buttons:
+            button.draw(app)
+        
+        # draw messages
+        for i in range(len(app.messages)):
+            drawLabel(app.messages[i], 1100, 50 + 25*i, size=16)
+        
+        # draw building costs
+        drawImage(app.buildCost[app.curPlayerID], 1100, 620, align='center')
+        
+        # draw circles for placement
+        if app.gameState == 'start game':
+            if app.stage % 2 == 1:
+                drawBuildingPlaces(app)
+            else:
+                drawRoadPlaces(app)
+        elif app.gameState[:5] == 'build':
+            if app.gameState[6:] == 'road':
+                drawRoadPlaces(app)
+            else:
+                drawBuildingPlaces(app)
+        elif app.gameState in ['move robber', 'knight robber']:
+            drawRobberPlaces(app)
 
 
 def drawRoadPlaces(app):
@@ -166,86 +173,90 @@ def drawRobberPlaces(app):
 
 
 def onMousePress(app, mouseX, mouseY):
+    if app.screen == 'start':
+        app.screen = 'game'
+
     # no actions allowed if the game is over
-    if app.gameOver:
-        return
+    elif app.screen == 'game':
+        if app.gameOver:
+            return
 
-    # starting action
-    elif app.gameState == 'start game':
-        if app.stage == 1:
-            app.gameState = 'build settlement'
-            buildSettlement(app, mouseX, mouseY, True)
-        elif app.stage == 2:
-            app.gameState = 'build road'
-            buildRoad(app, mouseX, mouseY, True)
-            if app.stage == 3:
-                nextPlayer(app)
-        elif app.stage == 3:
-            app.gameState = 'build settlement'
-            buildSettlement(app, mouseX, mouseY, True)
-        elif app.stage == 4:
-            app.gameState = 'build road'
-            buildRoad(app, mouseX, mouseY, True)
-        elif app.stage == 5:
-            app.gameState = 'build settlement'
-            buildSettlement(app, mouseX, mouseY, True)
-        elif app.stage == 6:
-            app.gameState = 'build road'
-            buildRoad(app, mouseX, mouseY, True)
-            if app.stage == 7:
-                nextPlayer(app)
-        elif app.stage == 7:
-            app.gameState = 'build settlement'
-            buildSettlement(app, mouseX, mouseY, True)
-        elif app.stage == 8:
-            app.gameState = 'build road'
-            buildRoad(app, mouseX, mouseY, True)
+        # starting action
+        elif app.gameState == 'start game':
+            if app.stage == 1:
+                app.gameState = 'build settlement'
+                buildSettlement(app, mouseX, mouseY, True)
+            elif app.stage == 2:
+                app.gameState = 'build road'
+                buildRoad(app, mouseX, mouseY, True)
+                if app.stage == 3:
+                    nextPlayer(app)
+            elif app.stage == 3:
+                app.gameState = 'build settlement'
+                buildSettlement(app, mouseX, mouseY, True)
+            elif app.stage == 4:
+                app.gameState = 'build road'
+                buildRoad(app, mouseX, mouseY, True)
+            elif app.stage == 5:
+                app.gameState = 'build settlement'
+                buildSettlement(app, mouseX, mouseY, True)
+            elif app.stage == 6:
+                app.gameState = 'build road'
+                buildRoad(app, mouseX, mouseY, True)
+                if app.stage == 7:
+                    nextPlayer(app)
+            elif app.stage == 7:
+                app.gameState = 'build settlement'
+                buildSettlement(app, mouseX, mouseY, True)
+            elif app.stage == 8:
+                app.gameState = 'build road'
+                buildRoad(app, mouseX, mouseY, True)
 
-            # if starting phase is over
-            if app.stage >= 9:
-                nextPlayer(app)
+                # if starting phase is over
+                if app.stage >= 9:
+                    nextPlayer(app)
+                    nextTurn(app)
+                    app.gameState = 'player turn'
+
+                    # exit start game state
+                    return
+            
+            app.gameState = 'start game'
+            
+        # on player turn, check actions of all buttons
+        elif app.gameState == 'player turn':
+            for button in app.buttons:
+                if button.onClick(app, mouseX, mouseY): 
+                    break
+
+            if app.gameState == 'end turn':
                 nextTurn(app)
-                app.gameState = 'player turn'
 
-                # exit start game state
-                return
-        
-        app.gameState = 'start game'
-        
-    # on player turn, check actions of all buttons
-    elif app.gameState == 'player turn':
-        for button in app.buttons:
-            if button.onClick(app, mouseX, mouseY): 
-                break
-
-        if app.gameState == 'end turn':
-            nextTurn(app)
-
-    # player has acted, so check what they want to do
-    else:
-        if app.gameState == 'build road':
-            buildRoad(app, mouseX, mouseY)
-        elif app.gameState == 'build settlement':
-            buildSettlement(app, mouseX, mouseY)
-        elif app.gameState == 'build city':
-            buildCity(app, mouseX, mouseY)
-        elif app.gameState == 'move robber':
-            moveRobber(app, mouseX, mouseY)
-        elif app.gameState == 'knight robber':
-            moveRobber(app, mouseX, mouseY, True)
-        elif app.gameState == 'trade':
-            trade(app, mouseX, mouseY)
-        elif app.gameState == 'pick resource':
-            pickResource(app, mouseX, mouseY)
-        
-        if app.curPlayer.vp >= 10:
-            updateMessages(app, f'Player {app.curPlayerID+1} wins with ' + 
-                           f'{app.curPlayer.vp} points!')
-            otherPlayerID = (app.curPlayerID + 1) % app.numPlayers
-            updateMessages(app, f'Player {otherPlayerID+1} got second place' + 
-                           f' with {app.players[otherPlayerID].vp} points')
-            updateMessages(app, 'Press n for a new game')
-            app.gameOver = True
+        # player has acted, so check what they want to do
+        else:
+            if app.gameState == 'build road':
+                buildRoad(app, mouseX, mouseY)
+            elif app.gameState == 'build settlement':
+                buildSettlement(app, mouseX, mouseY)
+            elif app.gameState == 'build city':
+                buildCity(app, mouseX, mouseY)
+            elif app.gameState == 'move robber':
+                moveRobber(app, mouseX, mouseY)
+            elif app.gameState == 'knight robber':
+                moveRobber(app, mouseX, mouseY, True)
+            elif app.gameState == 'trade':
+                trade(app, mouseX, mouseY)
+            elif app.gameState == 'pick resource':
+                pickResource(app, mouseX, mouseY)
+            
+            if app.curPlayer.vp >= 10:
+                updateMessages(app, f'Player {app.curPlayerID+1} wins with ' + 
+                            f'{app.curPlayer.vp} points!')
+                otherPlayerID = (app.curPlayerID + 1) % app.numPlayers
+                updateMessages(app, f'Player {otherPlayerID+1} got second place' + 
+                            f' with {app.players[otherPlayerID].vp} points')
+                updateMessages(app, 'Press n for a new game')
+                app.gameOver = True
 
 
 def onKeyPress(app, key):
