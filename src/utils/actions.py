@@ -129,6 +129,9 @@ def moveRobber(app, mouseX, mouseY, knight=False):
                 app.curPlayer.cards['ore'] -= 1
 
             app.robberCoords = (px, py)
+            updateMessages(app, f'Player {app.curPlayerID+1} moved the robber' 
+                           + f' to {app.board.centers[(px, py)][1]} '
+                           + f'{app.board.centers[(px, py)][0]}')
 
             app.gameState = 'player turn'
             return
